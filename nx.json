@@ -1,0 +1,28 @@
+{
+  "npmScope": "brvns-repertory",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "projects": {
+    "repertory-app": {
+      "tags": []
+    },
+    "repertory-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["repertory-app"]
+    },
+    "api": {
+      "tags": []
+    },
+    "api-interfaces": {
+      "tags": []
+    }
+  }
+}
