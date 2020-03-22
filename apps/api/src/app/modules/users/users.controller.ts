@@ -11,7 +11,7 @@ export class UsersController {
         const users = await this.usersService.getAll();
         return users.map(user => ({
             id: user.id,
-            nickname: user.nickname,
+            name: user.name,
             email: user.email || ""
         }));
     }

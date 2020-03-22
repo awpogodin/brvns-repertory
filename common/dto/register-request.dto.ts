@@ -1,5 +1,5 @@
 export interface RegisterRequestDTO {
     email: string;
-    nickname: string;
+    name: string;
     password: string;
 }

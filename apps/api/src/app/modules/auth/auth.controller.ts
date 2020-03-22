@@ -29,7 +29,7 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Get()
     protected(@Request() req): string {
-        const { nickname } = req.user;
-        return `Hello, ${nickname}`;
+        const { name } = req.user;
+        return `Hello, ${name}`;
     }
 }

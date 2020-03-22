@@ -32,7 +32,7 @@ export class AuthService {
         if (isPassValid) {
             const payload = {
                 sub: user.id,
-                nickname: user.nickname,
+                name: user.name,
                 iat: Number(Date.now())
             };
             const accessToken = this.jwtService.sign(payload, {

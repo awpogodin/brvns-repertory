@@ -23,10 +23,10 @@ export class UsersService {
         });
     }
 
-    findByNickname(nickname: string): Promise<UserDAO> {
+    findByName(name: string): Promise<UserDAO> {
         return this.usersRepository.findOne({
             where: {
-                nickname: nickname
+                nickname: name
             }
         });
     }

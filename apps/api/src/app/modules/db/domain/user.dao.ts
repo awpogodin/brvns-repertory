@@ -1,16 +1,21 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {RoleDAO} from "./role.dao";
 
 @Entity()
 export class UserDAO {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ default: "" })
+    @Column()
     email: string;
 
     @Column()
     password: string;
 
     @Column()
-    nickname: string;
+    name: string;
+
+    @ManyToOne(type => RoleDAO)
+    @Column()
+    role_id: string;
 }
