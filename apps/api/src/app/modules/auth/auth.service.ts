@@ -2,9 +2,9 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { UsersService } from "../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { UserDAO } from "../db/domain/user.dao";
-import { LoginResponseDTO } from "../../../../../../common/dto/login-response.dto";
+import { LoginResponseDTO } from "common/dto/login-response.dto";
 import { CryptographerService } from "./cryptographer.service";
-import { PayloadModel } from "../../../../../../common/models/payload.model";
+import { PayloadModel } from "common/models/payload.model";
 import { LoginRequestDTO } from "common/dto/login-request.dto";
 import { RegisterRequestDTO } from "common/dto/register-request.dto";
 
@@ -17,11 +17,11 @@ export class AuthService {
     ) {}
 
     public async validate(payload: PayloadModel): Promise<UserDAO> {
-        return await this.usersService.findById(payload.sub);
+        return await this.usersService.findUserById(payload.sub);
     }
 
     public async login(loginDTO: LoginRequestDTO): Promise<LoginResponseDTO> {
-        const user = await this.usersService.findByEmail(loginDTO.email);
+        const user = await this.usersService.findUserByEmail(loginDTO.email);
         if (!user) {
             throw new HttpException("Invalid email", HttpStatus.UNAUTHORIZED);
         }
@@ -47,7 +47,7 @@ export class AuthService {
     }
 
     public async register(registerDTO: RegisterRequestDTO): Promise<any> {
-        const user = await this.usersService.findByEmail(registerDTO.email);
+        const user = await this.usersService.findUserByEmail(registerDTO.email);
         if (user) {
             throw new HttpException(
                 "User is already exist",
@@ -58,7 +58,7 @@ export class AuthService {
             ...registerDTO,
             password: this.cryptoService.hashPassword(registerDTO.password)
         };
-        await this.usersService.create(candidateUser);
+        await this.usersService.createUser(candidateUser);
         return {
             message: "User created"
         };

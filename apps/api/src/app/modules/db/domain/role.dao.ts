@@ -3,11 +3,11 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity()
 export class RoleDAO {
   @PrimaryGeneratedColumn()
-  id: number;
+  role_id: number;
 
   @Column()
-  type: string;
+  name: string;
 
-  @Column({default: false})
-  is_admin: boolean;
+  @Column()
+  slug: string;
 }

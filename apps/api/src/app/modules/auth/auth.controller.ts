@@ -6,10 +6,10 @@ import {
     UseGuards,
     Request
 } from "@nestjs/common";
-import { LoginRequestDTO } from "../../../../../../common/dto/login-request.dto";
-import { RegisterRequestDTO } from "../../../../../../common/dto/register-request.dto";
+import { LoginRequestDTO } from "common/dto/login-request.dto";
+import { RegisterRequestDTO } from "common/dto/register-request.dto";
 import { AuthService } from "./auth.service";
-import { LoginResponseDTO } from "../../../../../../common/dto/login-response.dto";
+import { LoginResponseDTO } from "common/dto/login-response.dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
 @Controller("auth")

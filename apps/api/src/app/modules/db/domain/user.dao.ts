@@ -17,5 +17,5 @@ export class UserDAO {
 
     @ManyToOne(type => RoleDAO)
     @Column()
-    role_id: string;
+    role_id: number;
 }
