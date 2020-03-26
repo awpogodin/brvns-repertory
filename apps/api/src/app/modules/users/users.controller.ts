@@ -14,10 +14,9 @@ export class UsersController {
         return users.map(user => ({
             id: user.id,
             name: user.name,
-            email: user.email || "",
+            email: user.email,
             role: user.role_id
         }));
-        // return users;
     }
 
     @Get("roles")

@@ -1,0 +1,38 @@
+<div>
+    <brvns-repertory-heading title="Регистрация"></brvns-repertory-heading>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" class="form">
+        <mat-form-field class="form__input" hideRequiredMarker>
+            <mat-label>Имя</mat-label>
+            <input matInput formControlName="name" required>
+            <mat-error *ngIf="name.invalid">{{getNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form__input" hideRequiredMarker>
+            <mat-label>Фамилия</mat-label>
+            <input matInput formControlName="surname" required>
+            <mat-error *ngIf="surname.invalid">{{getSurnameErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form__input" hideRequiredMarker>
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" required>
+            <mat-error *ngIf="email.invalid">{{getEmailErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form__input" hideRequiredMarker>
+            <mat-label>Пароль</mat-label>
+            <input matInput formControlName="password" type="password" required>
+            <mat-error *ngIf="password.invalid">{{getPasswordErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form__input" hideRequiredMarker>
+            <mat-label>Повторите пароль</mat-label>
+            <input matInput formControlName="confirmPassword" type="password" [errorStateMatcher]="errorMatcher" required>
+            <mat-error *ngIf="confirmPassword.invalid || form.hasError('mismatch')">{{getConfirmPasswordErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <div class="form__progress">
+            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        </div>
+        <span class="form__text">
+            Есть аккаунт?
+            <a class="form__text_link" routerLink="/login">Войти</a>
+        </span>
+        <button [disabled]="form.invalid" class="form__btn" mat-button type="submit">Зарегистрироваться</button>
+    </form>
+</div>

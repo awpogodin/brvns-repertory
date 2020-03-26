@@ -40,7 +40,10 @@ export class UsersService {
     }
 
     async createUser(user: RegisterRequestDTO): Promise<UserDAO> {
-        const role = await this.getRoleBySlug("USER");
+        const role = await this.getRoleBySlug("USER") || await this.createRole({
+            name: "Пользователь",
+            slug: "USER"
+        });
         return await this.usersRepository.save({
             ...user,
             role_id: role.role_id
