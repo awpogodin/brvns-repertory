@@ -1,13 +1,4 @@
- <mat-sidenav-container class="app">
-    <mat-sidenav mode="side" [(opened)]="opened">
-        Sidenav content
-    </mat-sidenav>
-    <mat-sidenav-content>
-            <brvns-repertory-header></brvns-repertory-header>
-            <brvns-repertory-header></brvns-repertory-header>
-            <brvns-repertory-header></brvns-repertory-header>
-            <brvns-repertory-header></brvns-repertory-header>
-            <brvns-repertory-header></brvns-repertory-header>
-            <mat-checkbox [(ngModel)]="opened"></mat-checkbox>
-    </mat-sidenav-content>
- </mat-sidenav-container>
+ <div class="app">
+     <brvns-repertory-navbar></brvns-repertory-navbar>
+     <router-outlet></router-outlet>
+ </div>

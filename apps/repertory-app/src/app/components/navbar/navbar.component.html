@@ -1,0 +1,18 @@
+<div class="navbar">
+    <div class="logo">
+        <a routerLink="/">
+            <img alt="Bioravnovesie" src="assets/img/logo.png">
+        </a>
+    </div>
+    <div class="brand-block">
+        <h1 class="brand">Реперторий</h1>
+        <h2 class="desc">Биоравновесие</h2>
+    </div>
+    <button [disabled]="!auth" mat-icon-button class="menu-btn" [matMenuTriggerFor]="appMenu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
+</div>
+<mat-menu #appMenu="matMenu">
+    <button mat-menu-item routerLink="/login">Войти</button>
+    <button mat-menu-item>Help</button>
+</mat-menu>
