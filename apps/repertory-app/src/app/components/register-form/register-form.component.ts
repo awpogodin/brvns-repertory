@@ -13,7 +13,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 /** Error when the parent is invalid */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
     isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-        return control.dirty && form.hasError('mismatch');
+        return control.touched && (form.hasError('mismatch') || control.invalid);
     }
 }
 
