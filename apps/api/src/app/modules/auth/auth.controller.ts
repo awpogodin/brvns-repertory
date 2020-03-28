@@ -11,6 +11,7 @@ import { RegisterRequestDTO } from "common/dto/register-request.dto";
 import { AuthService } from "./auth.service";
 import { LoginResponseDTO } from "common/dto/login-response.dto";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
+import { UserDTO } from "../../../../../../common/dto/user.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -28,8 +29,8 @@ export class AuthController {
 
     @UseGuards(JwtAuthGuard)
     @Get()
-    protected(@Request() req): string {
-        const { name } = req.user;
-        return `Hello, ${name}`;
+    protected(@Request() req): UserDTO {
+        const { id, name, email, role_id } = req.user;
+        return { id, name, email, role_id };
     }
 }

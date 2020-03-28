@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import {FormControl, FormGroup, Validators, FormBuilder, AbstractControl} from "@angular/forms";
+import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from "@angular/forms";
+import { AuthService } from "../../services/auth.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'brvns-repertory-login-form',
@@ -9,7 +11,13 @@ import {FormControl, FormGroup, Validators, FormBuilder, AbstractControl} from "
 export class LoginFormComponent {
     constructor(
         private formBuilder: FormBuilder,
-    ) {}
+        private router: Router,
+        private authService: AuthService,
+    ) {
+        if (this.authService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
+    }
 
     public form: FormGroup = this.formBuilder.group({
         email: ['', Validators.compose([
@@ -54,9 +62,17 @@ export class LoginFormComponent {
     }
 
     onSubmit() {
+        this.loading = true;
         if (this.form.valid) {
             const body = this.form.getRawValue();
             console.log(body);
+            this.authService.login(body).subscribe(() => {
+                this.router.navigate(['/']);
+                this.loading = false;
+            }, (err) => {
+                console.log('Error login: ', err);
+                this.loading = false;
+            })
         }
     }
 }

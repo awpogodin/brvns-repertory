@@ -15,7 +15,7 @@ export class UsersController {
             id: user.id,
             name: user.name,
             email: user.email,
-            role: user.role_id
+            role_id: user.role_id
         }));
     }
 

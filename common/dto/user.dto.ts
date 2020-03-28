@@ -4,5 +4,5 @@ export interface UserDTO {
     id: number;
     name: string;
     email: string;
-    role?: RoleDTO | number;
+    role_id?: RoleDTO | number;
 }

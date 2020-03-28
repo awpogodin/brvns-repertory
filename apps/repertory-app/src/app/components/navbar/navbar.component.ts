@@ -1,16 +1,27 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from "../../services/auth.service";
+import { LoginResponseDTO } from "../../../../../../common/dto/login-response.dto";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'brvns-repertory-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
-  constructor() { }
+export class NavbarComponent {
+    public currentUser: LoginResponseDTO;
 
-  public auth = true;
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+    ) {
+      this.authService.currentUser.subscribe(x => {
+          this.currentUser = x;
+      });
+    }
 
-  ngOnInit(): void {
-  }
-
+    logout() {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+    }
 }

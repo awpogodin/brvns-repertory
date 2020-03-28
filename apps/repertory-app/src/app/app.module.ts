@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -15,13 +15,17 @@ import { LoginFormComponent } from './components/login-form/login-form.component
 import { HeadingComponent } from './components/heading/heading.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
-import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { RegisterFormComponent } from './components/register-form/register-form.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { ErrorInterceptor } from "./interceptors/error.interceptor";
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
     {
         path: '',
         component: RepertoryComponent,
+        canActivate: [AuthGuard]
     },
     {
         path: 'login',
@@ -38,9 +42,32 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, RepertoryComponent, LoginFormComponent, HeadingComponent, RegisterFormComponent],
-    imports: [BrowserModule, HttpClientModule, BrowserAnimationsModule, FormsModule, MatIconModule, MatButtonModule, RouterModule.forRoot(routes), MatMenuModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatProgressBarModule,],
-  providers: [],
+  declarations: [
+      AppComponent,
+      NavbarComponent,
+      RepertoryComponent,
+      LoginFormComponent,
+      HeadingComponent,
+      RegisterFormComponent,
+  ],
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        MatIconModule,
+        MatButtonModule,
+        RouterModule.forRoot(routes),
+        MatMenuModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatProgressBarModule,
+        ReactiveFormsModule,
+    ],
+  providers: [
+      { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+      { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -8,11 +8,11 @@
         <h1 class="brand">Реперторий</h1>
         <h2 class="desc">Биоравновесие</h2>
     </div>
-    <button [disabled]="!auth" mat-icon-button class="menu-btn" [matMenuTriggerFor]="appMenu">
+    <button [disabled]="!currentUser" mat-icon-button class="menu-btn" [matMenuTriggerFor]="appMenu">
         <mat-icon>more_vert</mat-icon>
     </button>
 </div>
 <mat-menu #appMenu="matMenu">
     <button mat-menu-item routerLink="/login">Войти</button>
-    <button mat-menu-item>Help</button>
+    <button mat-menu-item (click)="logout()">Выйти</button>
 </mat-menu>
