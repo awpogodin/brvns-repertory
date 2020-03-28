@@ -12,7 +12,6 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {NotificationService} from "../../services/notification.service";
-import {first} from "rxjs/operators";
 import codes from "../../../../../../common/response-codes";
 
 /** Error when the parent hasError */

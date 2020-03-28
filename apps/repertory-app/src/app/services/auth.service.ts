@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { LoginRequestDTO } from "../../../../../common/dto/login-request.dto";
 import { LoginResponseDTO } from "../../../../../common/dto/login-response.dto";
-import {map, catchError, first} from "rxjs/operators";
-import {BehaviorSubject, Observable, throwError} from "rxjs";
+import { map, first } from "rxjs/operators";
+import { BehaviorSubject, Observable } from "rxjs";
 import { RegisterRequestDTO } from "../../../../../common/dto/register-request.dto";
 
 const API = '/api/auth';

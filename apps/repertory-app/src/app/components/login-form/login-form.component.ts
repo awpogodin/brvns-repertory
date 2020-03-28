@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from "@angular/forms";
+import { FormGroup, Validators, FormBuilder, AbstractControl } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { Router } from '@angular/router';
-import { first } from 'rxjs/operators';
 import { NotificationService } from '../../services/notification.service';
 import codes from "../../../../../../common/response-codes";
 
