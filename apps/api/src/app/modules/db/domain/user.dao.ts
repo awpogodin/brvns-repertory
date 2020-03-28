@@ -1,5 +1,5 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {RoleDAO} from "./role.dao";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { RoleDAO } from "./role.dao";
 
 @Entity()
 export class UserDAO {
