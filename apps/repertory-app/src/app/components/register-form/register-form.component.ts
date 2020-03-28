@@ -9,6 +9,11 @@ import {
     Validators
 } from "@angular/forms";
 import { ErrorStateMatcher } from '@angular/material/core';
+import {Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
+import {NotificationService} from "../../services/notification.service";
+import {first} from "rxjs/operators";
+import codes from "../../../../../../common/response-codes";
 
 /** Error when the parent hasError */
 class CrossFieldErrorMatcher implements ErrorStateMatcher {
@@ -25,7 +30,14 @@ class CrossFieldErrorMatcher implements ErrorStateMatcher {
 export class RegisterFormComponent {
     constructor(
         private formBuilder: FormBuilder,
-    ) {}
+        private router: Router,
+        private authService: AuthService,
+        private notificationService: NotificationService,
+    ) {
+        if (this.authService.currentUserValue) {
+            this.router.navigate(['/']);
+        }
+    }
 
     public form: FormGroup = this.formBuilder.group({
         name: ['', Validators.compose([
@@ -134,8 +146,18 @@ export class RegisterFormComponent {
 
     onSubmit() {
         if (this.form.valid) {
+            this.loading = true;
             const body = this.form.getRawValue();
-            console.log(body);
+            this.authService.register(body)
+                .subscribe(() => {
+                    this.notificationService.notification$.next('Регистрация прошла успешно');
+                    this.loading = false;
+                    this.router.navigate(['/']);
+                }, (err) => {
+                    const msg = codes[err] || 'Что-то пошло не так';
+                    this.notificationService.notification$.next(msg);
+                    this.loading = false;
+                })
         }
     }
 }

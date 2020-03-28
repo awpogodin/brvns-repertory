@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { NotificationService } from './services/notification.service';
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: 'brvns-repertory-root',
@@ -6,5 +8,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor() {}
+  constructor(private notificationService: NotificationService, private _snackBar: MatSnackBar) {
+      this.notificationService.notification$.subscribe(message => {
+          this._snackBar.open(message, 'Закрыть', {
+              duration: 5000,
+          });
+      });
+  }
 }

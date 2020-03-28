@@ -20,6 +20,7 @@ import { RegisterFormComponent } from './components/register-form/register-form.
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from "./interceptors/error.interceptor";
 import { AuthGuard } from './guards/auth.guard';
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 
 const routes: Routes = [
     {
@@ -63,6 +64,7 @@ const routes: Routes = [
         MatInputModule,
         MatProgressBarModule,
         ReactiveFormsModule,
+        MatSnackBarModule,
     ],
   providers: [
       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

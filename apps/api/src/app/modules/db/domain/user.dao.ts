@@ -7,13 +7,16 @@ export class UserDAO {
     id: number;
 
     @Column()
+    name: string;
+
+    @Column()
+    surname: string;
+
+    @Column()
     email: string;
 
     @Column()
     password: string;
-
-    @Column()
-    name: string;
 
     @ManyToOne(type => RoleDAO)
     @Column()

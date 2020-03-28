@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators, FormBuilder, AbstractControl } from "@angular/forms";
 import { AuthService } from "../../services/auth.service";
 import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
+import { NotificationService } from '../../services/notification.service';
+import codes from "../../../../../../common/response-codes";
 
 @Component({
   selector: 'brvns-repertory-login-form',
@@ -13,6 +16,7 @@ export class LoginFormComponent {
         private formBuilder: FormBuilder,
         private router: Router,
         private authService: AuthService,
+        private notificationService: NotificationService,
     ) {
         if (this.authService.currentUserValue) {
             this.router.navigate(['/']);
@@ -62,17 +66,19 @@ export class LoginFormComponent {
     }
 
     onSubmit() {
-        this.loading = true;
         if (this.form.valid) {
+            this.loading = true;
             const body = this.form.getRawValue();
-            console.log(body);
-            this.authService.login(body).subscribe(() => {
-                this.router.navigate(['/']);
-                this.loading = false;
-            }, (err) => {
-                console.log('Error login: ', err);
-                this.loading = false;
-            })
+            this.authService.login(body)
+                .subscribe(() => {
+                    this.notificationService.notification$.next('Авторизация прошла успешно');
+                    this.loading = false;
+                    this.router.navigate(['/']);
+                }, (err) => {
+                    const msg = codes[err] || 'Что-то пошло не так';
+                    this.notificationService.notification$.next(msg);
+                    this.loading = false;
+                })
         }
     }
 }

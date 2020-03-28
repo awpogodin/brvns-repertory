@@ -30,7 +30,7 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Get()
     protected(@Request() req): UserDTO {
-        const { id, name, email, role_id } = req.user;
-        return { id, name, email, role_id };
+        const { id, name, surname, email, role_id } = req.user;
+        return { id, name, surname, email, role_id };
     }
 }

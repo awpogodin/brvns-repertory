@@ -7,6 +7,9 @@ export class RegisterRequestDTO {
     @Length(3, 20)
     name: string;
 
+    @Length(3, 20)
+    surname: string;
+
     @Length(5, 20)
     password: string;
 }
