@@ -21,6 +21,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from "./interceptors/error.interceptor";
 import { AuthGuard } from './guards/auth.guard';
 import { MatSnackBarModule } from "@angular/material/snack-bar";
+import {MatChipsModule} from "@angular/material/chips";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 const routes: Routes = [
     {
@@ -65,6 +67,8 @@ const routes: Routes = [
         MatProgressBarModule,
         ReactiveFormsModule,
         MatSnackBarModule,
+        MatChipsModule,
+        MatAutocompleteModule,
     ],
   providers: [
       { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
