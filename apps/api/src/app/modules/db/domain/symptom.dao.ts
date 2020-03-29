@@ -9,7 +9,7 @@ export class SymptomDAO {
     @Column()
     name: string;
 
-    @ManyToOne(type => SymptomDAO, parent => parent.symptom_id, { nullable: true })
+    @ManyToOne(type => SymptomDAO, parent => parent.symptom_id, { nullable: true, cascade: true, onDelete: "CASCADE" })
     parent_id: number;
 
     // @ManyToMany(type => MedicationDAO)
