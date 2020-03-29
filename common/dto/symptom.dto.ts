@@ -1,5 +1,5 @@
 export interface SymptomDTO {
-    id: number;
+    symptom_id: number;
     name: string;
     parent_id?: number;
     category_id: number;

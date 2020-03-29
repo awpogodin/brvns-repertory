@@ -1,5 +1,5 @@
 export interface MedicationDTO {
-    id: number;
+    medication_id: number;
     name: string;
     description: string;
 }

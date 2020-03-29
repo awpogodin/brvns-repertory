@@ -5,6 +5,7 @@ import { RoleDAO } from "./domain/role.dao";
 import { CategoryDAO } from "./domain/category.dao";
 import { SymptomDAO } from "./domain/symptom.dao";
 import { MedicationDAO } from "./domain/medication";
+import { SymptomsMedicationsDAO } from "./domain/symptoms-medications.dao";
 
 @Module({
     imports: [TypeOrmModule.forFeature([
@@ -12,7 +13,8 @@ import { MedicationDAO } from "./domain/medication";
         RoleDAO,
         CategoryDAO,
         SymptomDAO,
-        MedicationDAO
+        MedicationDAO,
+        SymptomsMedicationsDAO,
     ])],
     exports: [TypeOrmModule]
 })

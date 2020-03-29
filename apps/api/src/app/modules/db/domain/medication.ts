@@ -12,7 +12,7 @@ export class MedicationDAO {
     @Column()
     description: string;
 
-    @ManyToMany(type => SymptomDAO, { nullable: true, cascade: true, onDelete: "CASCADE" })
-    @JoinTable()
-    symptoms: SymptomDAO[];
+    // @ManyToMany(type => SymptomDAO, { nullable: true, cascade: true, onDelete: "CASCADE" })
+    // @JoinTable()
+    // symptoms: SymptomDAO[];
 }
