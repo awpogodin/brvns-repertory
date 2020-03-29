@@ -33,6 +33,6 @@
             Есть аккаунт?
             <a class="form__text_link" routerLink="/login">Войти</a>
         </span>
-        <button [disabled]="form.invalid" class="form__btn" mat-button type="submit">Зарегистрироваться</button>
+        <button [disabled]="form.invalid || loading" class="form__btn" mat-button type="submit">Зарегистрироваться</button>
     </form>
 </div>

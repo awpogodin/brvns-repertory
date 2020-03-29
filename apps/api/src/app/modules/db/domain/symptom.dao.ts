@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import { MedicationDAO } from "./medication";
 
 @Entity()
@@ -9,12 +9,10 @@ export class SymptomDAO {
     @Column()
     name: string;
 
-    @ManyToOne(type => SymptomDAO, parent => parent.childs, { nullable: true })
-    parent: string;
+    @ManyToOne(type => SymptomDAO, parent => parent.symptom_id, { nullable: true })
+    parent_id: number;
 
-    @OneToMany(type => SymptomDAO, child => child.parent, { nullable: true })
-    childs: SymptomDAO[];
-
-    @ManyToMany(type => MedicationDAO, medication => medication.symptoms)
-    medications: MedicationDAO[];
+    // @ManyToMany(type => MedicationDAO)
+    // @JoinTable()
+    // medications: MedicationDAO[];
 }

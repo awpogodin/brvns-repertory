@@ -3,6 +3,7 @@ import { AuthService } from "../../services/auth.service";
 import { LoginResponseDTO } from "../../../../../../common/dto/login-response.dto";
 import { Router } from "@angular/router";
 import { NotificationService } from "../../services/notification.service";
+import {Unsubscribable} from "rxjs";
 
 @Component({
   selector: 'brvns-repertory-navbar',
@@ -11,15 +12,16 @@ import { NotificationService } from "../../services/notification.service";
 })
 export class NavbarComponent {
     public currentUser: LoginResponseDTO;
+    private sub: Unsubscribable;
 
     constructor(
         private authService: AuthService,
         private router: Router,
         private notificationService: NotificationService,
     ) {
-      this.authService.currentUser.subscribe(x => {
-          this.currentUser = x;
-      });
+        this.authService.currentUser.subscribe(x => {
+            this.currentUser = x;
+        });
     }
 
     logout() {

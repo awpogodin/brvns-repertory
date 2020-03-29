@@ -12,7 +12,7 @@ export class MedicationDAO {
     @Column()
     description: string;
 
-    @ManyToMany(type => SymptomDAO, symptom => symptom.medications)
+    @ManyToMany(type => SymptomDAO)
     @JoinTable()
     symptoms: SymptomDAO[];
 }
