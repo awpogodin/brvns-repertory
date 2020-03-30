@@ -1,7 +1,7 @@
-import { IsNotEmpty } from "class-validator";
+import {IsNotEmpty, Length} from "class-validator";
 
 export class SymptomBodyDTO {
-    @IsNotEmpty()
+    @Length(2, 25)
     name: string;
 
     parent_id: number;

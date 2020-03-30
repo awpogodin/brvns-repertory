@@ -1,8 +1,6 @@
-import { IsNotEmpty } from "class-validator";
+import { Length } from "class-validator";
 
 export class CategoryBodyDTO {
-    @IsNotEmpty()
+    @Length(3, 25)
     title: string;
-
-    description: string;
 }

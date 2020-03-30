@@ -1,9 +1,9 @@
-import { IsNotEmpty } from "class-validator";
+import { Length } from "class-validator";
 
 export class MedicationBodyDTO {
-    @IsNotEmpty()
+    @Length(2, 25)
     name: string;
 
-    @IsNotEmpty()
+    @Length(0, 50)
     description: string;
 }

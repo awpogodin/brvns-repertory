@@ -7,7 +7,4 @@ export class CategoryDAO {
 
     @Column()
     title: string;
-
-    @Column({ nullable: true })
-    description: string;
 }
