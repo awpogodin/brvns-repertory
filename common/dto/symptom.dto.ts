@@ -1,8 +1,10 @@
 import { CategoryDTO } from "./category.dto";
+import { MedicationDTO } from "./medication.dto";
 
 export interface SymptomDTO {
     symptom_id: number;
     name: string;
-    parent_id?: number|SymptomDTO;
-    category_id: number|CategoryDTO;
+    parent?: SymptomDTO;
+    category: CategoryDTO;
+    medications: MedicationDTO[];
 }
