@@ -39,7 +39,7 @@ export class RepertoryService {
     }
 
     getMedicationsAll(): Promise<MedicationDAO[]> {
-        return this.medicationRepository.find({ relations: ["symptoms"] });
+        return this.medicationRepository.find();
     }
 
     getMedicationById(id: number): Promise<MedicationDAO> {
@@ -51,15 +51,15 @@ export class RepertoryService {
     }
 
     getSymptomsAll(): Promise<SymptomDAO[]> {
-        // return this.symptomRepository.find({
-        //     relations: ["parent", "category", "medications"],
-        // });
-        return this.symptomRepository
-            .createQueryBuilder("symptom")
-            .leftJoinAndSelect("symptom.parent", "parent_id")
-            .leftJoinAndSelect("symptom.category", "category_id")
-            .leftJoinAndSelect("symptom.medications", "medication")
-            .getMany();
+        return this.symptomRepository.find({
+            relations: ["parent", "category"],
+        });
+        // return this.symptomRepository
+        //     .createQueryBuilder("symptom")
+        //     .leftJoinAndSelect("symptom.parent", "parent_id")
+        //     .leftJoinAndSelect("symptom.category", "category_id")
+        //     .leftJoinAndSelect("symptom.medications", "medication")
+        //     .getMany();
     }
 
     getSymptomById(id: number): Promise<SymptomDAO> {
@@ -92,22 +92,22 @@ export class RepertoryService {
             }
             return this.symptomRepository.save({
                 ...symptom,
-                category_id: category.category_id,
-                parent_id: parent.symptom_id,
+                category,
+                parent,
             });
         }
         return this.symptomRepository.save({
             ...symptom,
-            category_id: category.category_id,
+            category,
         });
     }
 
     getMedicationsBySymptomId(id: number): Promise<SymptomsMedicationsDAO[]> {
         return this.symptomsMedicationsRepository.find({
             where: {
-                symptom_id: id,
+                symptom: id,
             },
-            relations: ["symptom_id", "medication_id"],
+            relations: ["symptom", "medication"],
         });
     }
 
@@ -127,8 +127,8 @@ export class RepertoryService {
         }
         const isCustom = false;
         return this.symptomsMedicationsRepository.save({
-            symptom_id,
-            medication_id,
+            symptom,
+            medication,
             isCustom,
         });
     }

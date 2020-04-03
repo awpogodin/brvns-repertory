@@ -1,11 +1,4 @@
-import {
-    Column,
-    Entity,
-    PrimaryGeneratedColumn,
-    ManyToMany,
-    JoinTable,
-} from "typeorm";
-import { SymptomDAO } from "./symptom.dao";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class MedicationDAO {
@@ -17,11 +10,4 @@ export class MedicationDAO {
 
     @Column()
     description: string;
-
-    @ManyToMany(() => SymptomDAO, {
-        eager: true,
-        nullable: true,
-    })
-    @JoinTable()
-    symptoms: SymptomDAO[];
 }

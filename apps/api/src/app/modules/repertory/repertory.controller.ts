@@ -16,6 +16,27 @@ import { SymptomDTO } from "../../../../../../common/dto/symptom.dto";
 import { SymptomBodyDTO } from "../../../../../../common/dto/symptom-body.dto";
 import { SymptomToMedicationBodyDTO } from "../../../../../../common/dto/symptom-to-medication-body.dto";
 
+function intersection(lists): any[] {
+    const result = [];
+
+    for (let i = 0; i < lists.length; i++) {
+        const currentList = lists[i];
+        for (let y = 0; y < currentList.length; y++) {
+            const currentValue = currentList[y];
+            if (!result.includes(currentValue)) {
+                if (
+                    lists.filter(function (obj) {
+                        return obj.indexOf(currentValue) === -1;
+                    }).length === 0
+                ) {
+                    result.push(currentValue);
+                }
+            }
+        }
+    }
+    return result;
+}
+
 @Controller("repertory")
 export class RepertoryController {
     constructor(private repertoryService: RepertoryService) {}
@@ -29,6 +50,7 @@ export class RepertoryController {
     @UseGuards(JwtAuthGuard)
     @Post("/categories")
     createCategory(@Body() category: CategoryBodyDTO): Promise<CategoryDTO> {
+        // TODO: do empty response
         return this.repertoryService.createCategory(category);
     }
 
@@ -56,6 +78,7 @@ export class RepertoryController {
     @UseGuards(JwtAuthGuard)
     @Post("/symptoms")
     createSymptom(@Body() symptom: SymptomBodyDTO): Promise<SymptomDTO> {
+        // TODO: do empty response
         return this.repertoryService.createSymptom(symptom);
     }
 
@@ -63,18 +86,26 @@ export class RepertoryController {
     @Post("/medications-by-symptoms")
     async getMedicationBySymptoms(
         @Body() arrOfSymptomsId: number[]
-    ): Promise<any[]> {
-        const result = [];
+    ): Promise<MedicationDTO[]> {
+        const arrayOfSymptomsMedications = [];
+        const arrayOfMedications = [];
         for (const id of arrOfSymptomsId) {
-            const meds = await this.repertoryService.getMedicationsBySymptomId(
+            const symptomsMedications = await this.repertoryService.getMedicationsBySymptomId(
                 id
             );
-            result.push({
-                symptom_id: id,
-                meds,
-            });
+            arrayOfSymptomsMedications.push(
+                symptomsMedications.map((m) => {
+                    arrayOfMedications.push(m.medication);
+                    return m.medication.medication_id;
+                })
+            );
         }
-        return result;
+        const arrayOfMedicationsId = intersection(
+            arrayOfSymptomsMedications
+        );
+        return arrayOfMedicationsId.map((id) =>
+            arrayOfMedications.find((m) => m.medication_id === id)
+        );
     }
 
     @UseGuards(JwtAuthGuard)

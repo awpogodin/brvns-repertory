@@ -18,14 +18,14 @@ export class SymptomsMedicationsDAO {
         onDelete: "CASCADE",
     })
     @JoinColumn()
-    symptom_id: number;
+    symptom: SymptomDAO;
 
     @ManyToOne(() => MedicationDAO, {
         cascade: true,
         onDelete: "CASCADE",
     })
     @JoinColumn()
-    medication_id: number;
+    medication: MedicationDAO;
 
     @Column({ default: false })
     isCustom: boolean;
