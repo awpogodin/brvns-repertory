@@ -1,6 +1,13 @@
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    JoinColumn,
+    ManyToMany,
+} from "typeorm";
+import { CategoryDAO } from "./category.dao";
 import { MedicationDAO } from "./medication";
-import {CategoryDAO} from "./category.dao";
 
 @Entity()
 export class SymptomDAO {
@@ -10,13 +17,26 @@ export class SymptomDAO {
     @Column()
     name: string;
 
-    @ManyToOne(type => SymptomDAO, parent => parent.symptom_id, { nullable: true, cascade: true, onDelete: "CASCADE" })
-    parent_id: number;
+    @ManyToOne(() => SymptomDAO, {
+        nullable: true,
+        cascade: true,
+        onDelete: "CASCADE",
+    })
+    @JoinColumn({ name: "parent_id" })
+    parent: Promise<SymptomDAO>;
 
-    @ManyToOne(type => CategoryDAO, category => category.category_id, { cascade: true, onDelete: "CASCADE" })
-    category_id: number;
+    @ManyToOne(() => CategoryDAO, {
+        cascade: true,
+        onDelete: "CASCADE",
+    })
+    @JoinColumn({ name: "category_id" })
+    category: Promise<CategoryDAO>;
 
-    // @ManyToMany(type => MedicationDAO)
+    @ManyToMany(() => MedicationDAO, {
+        nullable: true,
+        cascade: true,
+        onDelete: "CASCADE",
+    })
     // @JoinTable()
-    // medications: MedicationDAO[];
+    medications: Promise<MedicationDAO[]>;
 }

@@ -33,35 +33,35 @@ export class AuthService {
                 const payload = {
                     sub: user.id,
                     name: user.name,
-                    iat: Number(Date.now())
+                    iat: Number(Date.now()),
                 };
                 const accessToken = this.jwtService.sign(payload, {
-                    expiresIn: this.configService.get("tokenExpiresIn")
+                    expiresIn: this.configService.get("tokenExpiresIn"),
                 });
                 return {
                     accessToken: accessToken,
-                    ...payload
+                    ...payload,
                 };
             }
         }
-        throw new HttpException("auth/invalidCredentials", HttpStatus.UNAUTHORIZED);
+        throw new HttpException(
+            "auth/invalidCredentials",
+            HttpStatus.UNAUTHORIZED
+        );
     }
 
     public async register(registerDTO: RegisterRequestDTO): Promise<any> {
         const user = await this.usersService.findUserByEmail(registerDTO.email);
         if (user) {
-            throw new HttpException(
-                "auth/userExist",
-                HttpStatus.BAD_REQUEST
-            );
+            throw new HttpException("auth/userExist", HttpStatus.BAD_REQUEST);
         }
         const candidateUser: RegisterRequestDTO = {
             ...registerDTO,
-            password: this.cryptoService.hashPassword(registerDTO.password)
+            password: this.cryptoService.hashPassword(registerDTO.password),
         };
         await this.usersService.createUser(candidateUser);
         return {
-            message: "user/created"
+            message: "user/created",
         };
     }
 }

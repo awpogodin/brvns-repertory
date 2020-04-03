@@ -1,5 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { RoleDAO } from "./role.dao";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { RoleEnum } from "./role.enum";
 
 @Entity()
 export class UserDAO {
@@ -18,7 +18,10 @@ export class UserDAO {
     @Column()
     password: string;
 
-    @ManyToOne(type => RoleDAO)
-    @Column()
-    role_id: number;
+    @Column({
+        type: "enum",
+        enum: RoleEnum,
+        default: RoleEnum.USER,
+    })
+    role: RoleEnum;
 }

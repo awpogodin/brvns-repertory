@@ -4,7 +4,7 @@ import {
     Get,
     Post,
     UseGuards,
-    Request
+    Request,
 } from "@nestjs/common";
 import { LoginRequestDTO } from "common/dto/login-request.dto";
 import { RegisterRequestDTO } from "common/dto/register-request.dto";
@@ -30,7 +30,7 @@ export class AuthController {
     @UseGuards(JwtAuthGuard)
     @Get()
     protected(@Request() req): UserDTO {
-        const { id, name, surname, email, role_id } = req.user;
-        return { id, name, surname, email, role_id };
+        const { id, name, surname, email, role } = req.user;
+        return { id, name, surname, email, role };
     }
 }

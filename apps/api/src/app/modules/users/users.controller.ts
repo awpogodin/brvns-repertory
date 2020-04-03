@@ -1,8 +1,6 @@
-import { Controller, Get, Post, Body } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { UserDTO } from "common/dto/user.dto";
-import { RoleDTO } from "common/dto/role.dto";
-import { RoleDAO } from "../db/domain/role.dao";
 
 @Controller()
 export class UsersController {
@@ -11,22 +9,12 @@ export class UsersController {
     @Get("users")
     async getAll(): Promise<UserDTO[]> {
         const users = await this.usersService.getUsersAll();
-        return users.map(user => ({
+        return users.map((user) => ({
             id: user.id,
             name: user.name,
             surname: user.surname,
             email: user.email,
-            role_id: user.role_id
+            role: user.role,
         }));
-    }
-
-    @Get("roles")
-    getAllRoles(): Promise<RoleDAO[]> {
-        return this.usersService.getRolesAll()
-    }
-
-    @Post("roles")
-    createRole(@Body() role: RoleDTO): Promise<RoleDAO> {
-        return this.usersService.createRole(role)
     }
 }

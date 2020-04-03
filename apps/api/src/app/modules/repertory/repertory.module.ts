@@ -7,6 +7,6 @@ import { UsersService } from "../users/users.service";
 @Module({
     imports: [DbModule],
     providers: [RepertoryService, UsersService],
-    controllers: [RepertoryController]
+    controllers: [RepertoryController],
 })
 export class RepertoryModule {}

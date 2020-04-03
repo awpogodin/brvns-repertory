@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
+import {
+    Column,
+    Entity,
+    PrimaryGeneratedColumn,
+    ManyToMany,
+    JoinTable,
+} from "typeorm";
 import { SymptomDAO } from "./symptom.dao";
 
 @Entity()
@@ -12,7 +18,11 @@ export class MedicationDAO {
     @Column()
     description: string;
 
-    // @ManyToMany(type => SymptomDAO, { nullable: true, cascade: true, onDelete: "CASCADE" })
-    // @JoinTable()
-    // symptoms: SymptomDAO[];
+    @ManyToMany(() => SymptomDAO, {
+        nullable: true,
+        cascade: true,
+        onDelete: "CASCADE",
+    })
+    @JoinTable()
+    symptoms: Promise<SymptomDAO[]>;
 }

@@ -1,13 +1,20 @@
-import {Controller, Get, Post, Body, UseGuards, Request} from "@nestjs/common";
+import {
+    Controller,
+    Get,
+    Post,
+    Body,
+    UseGuards,
+    Request,
+} from "@nestjs/common";
 import { RepertoryService } from "./repertory.service";
 import { CategoryDTO } from "../../../../../../common/dto/category.dto";
 import { CategoryBodyDTO } from "../../../../../../common/dto/category-body.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import {MedicationDTO} from "../../../../../../common/dto/medication.dto";
-import {MedicationBodyDTO} from "../../../../../../common/dto/medication-body.dto";
-import {SymptomDTO} from "../../../../../../common/dto/symptom.dto";
-import {SymptomBodyDTO} from "../../../../../../common/dto/symptom-body.dto";
-import {SymptomToMedicationBodyDTO} from "../../../../../../common/dto/symptom-to-medication-body.dto";
+import { MedicationDTO } from "../../../../../../common/dto/medication.dto";
+import { MedicationBodyDTO } from "../../../../../../common/dto/medication-body.dto";
+import { SymptomDTO } from "../../../../../../common/dto/symptom.dto";
+import { SymptomBodyDTO } from "../../../../../../common/dto/symptom-body.dto";
+import { SymptomToMedicationBodyDTO } from "../../../../../../common/dto/symptom-to-medication-body.dto";
 
 @Controller("repertory")
 export class RepertoryController {
@@ -16,7 +23,7 @@ export class RepertoryController {
     @UseGuards(JwtAuthGuard)
     @Get("/categories")
     getCategoriesAll(): Promise<CategoryDTO[]> {
-         return this.repertoryService.getCategoriesAll();
+        return this.repertoryService.getCategoriesAll();
     }
 
     @UseGuards(JwtAuthGuard)
@@ -33,7 +40,9 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/medications")
-    createMedication(@Body() medication: MedicationBodyDTO): Promise<MedicationDTO> {
+    createMedication(
+        @Body() medication: MedicationBodyDTO
+    ): Promise<MedicationDTO> {
         return this.repertoryService.createMedication(medication);
     }
 
@@ -51,22 +60,33 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/medications-by-symptoms")
-    async getMedicationBySymptoms(@Body() arrOfSymptomsId: number[]): Promise<any[]> {
+    async getMedicationBySymptoms(
+        @Body() arrOfSymptomsId: number[]
+    ): Promise<any[]> {
         const result = [];
         for (const id of arrOfSymptomsId) {
-            const meds = await this.repertoryService.getMedicationsBySymptomId(id);
+            const meds = await this.repertoryService.getMedicationsBySymptomId(
+                id
+            );
             result.push({
                 symptom_id: id,
-                meds
-            })
+                meds,
+            });
         }
         return result;
     }
 
     @UseGuards(JwtAuthGuard)
     @Post("/symptom-to-medication")
-    async addSymptomsToMedication(@Request() req, @Body() body: SymptomToMedicationBodyDTO): Promise<any> {
+    async addSymptomsToMedication(
+        @Request() req,
+        @Body() body: SymptomToMedicationBodyDTO
+    ): Promise<any> {
         const { id } = req.user;
-        return this.repertoryService.addSymptomToMedication(body.symptom_id, body.medication_id, id)
+        return this.repertoryService.addSymptomToMedication(
+            body.symptom_id,
+            body.medication_id,
+            id
+        );
     }
 }

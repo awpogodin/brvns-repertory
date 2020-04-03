@@ -17,12 +17,12 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
         JwtModule.registerAsync({
             imports: [ConfigModule],
             useFactory: (configService: ConfigService) => ({
-                secret: configService.get<string>("tokenSecretKey")
+                secret: configService.get<string>("tokenSecretKey"),
             }),
-            inject: [ConfigService]
-        })
+            inject: [ConfigService],
+        }),
     ],
     providers: [CryptographerService, UsersService, AuthService, JwtStrategy],
-    controllers: [AuthController]
+    controllers: [AuthController],
 })
 export class AuthModule {}
