@@ -100,7 +100,7 @@ export class RepertoryService {
         const category = await this.getCategoryById(symptom.category_id);
         if (!category) {
             throw new HttpException(
-                "category/dontExist",
+                "symptoms/categoryDontExist",
                 HttpStatus.BAD_REQUEST
             );
         }
@@ -108,7 +108,7 @@ export class RepertoryService {
             const parent = await this.getSymptomById(symptom.parent_id);
             if (!parent) {
                 throw new HttpException(
-                    "parent/dontExist",
+                    "symptoms/parentDontExist",
                     HttpStatus.BAD_REQUEST
                 );
             }

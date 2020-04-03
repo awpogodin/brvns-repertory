@@ -7,6 +7,8 @@ import {
     Request,
     Param,
     Query,
+    HttpException,
+    HttpStatus,
 } from "@nestjs/common";
 import { RepertoryService } from "./repertory.service";
 import { CategoryDTO } from "../../../../../../common/dto/category.dto";
@@ -70,30 +72,127 @@ export class RepertoryController {
     }
 
     @UseGuards(JwtAuthGuard)
+    @Post("/medications/bulkCreate")
+    async bulkCreateMedications(
+        @Body() medications: MedicationBodyDTO[]
+    ): Promise<void> {
+        for (const medication of medications) {
+            await this.repertoryService.createMedication(medication);
+        }
+    }
+
+    @UseGuards(JwtAuthGuard)
     @Get("/symptoms")
-    getSymptomsAll(): Promise<SymptomDTO[]> {
+    async getSymptoms(@Query() query): Promise<SymptomDTO[]> {
+        if (query.parent_id) {
+            const parent = await this.repertoryService.getSymptomById(
+                query.parent_id
+            );
+            if (!parent) {
+                throw new HttpException(
+                    "symptoms/parentDontExist",
+                    HttpStatus.BAD_REQUEST
+                );
+            }
+            const childs = await this.repertoryService.getChildSymptomsByParentId(
+                parent.symptom_id
+            );
+            return childs.map((symptom) => ({
+                ...symptom,
+                name: `${parent.name}: ${symptom.name}`,
+            }));
+        }
+        if (query.category_id) {
+            const category = await this.repertoryService.getCategoryById(
+                query.category_id
+            );
+            if (!category) {
+                throw new HttpException(
+                    "symptoms/categoryDontExist",
+                    HttpStatus.BAD_REQUEST
+                );
+            }
+            return this.repertoryService.getParentSymptomsByCategoryId(
+                category.category_id
+            );
+        }
         return this.repertoryService.getSymptomsAll();
     }
 
     @UseGuards(JwtAuthGuard)
-    @Get("/symptoms/parents-by-category-id/:id")
-    getParentSymptomsByCategoryId(@Param() { id }): Promise<SymptomDTO[]> {
-        return this.repertoryService.getParentSymptomsByCategoryId(id);
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Get("/symptoms/childs-by-parent-id/")
-    getChildSymptomsByParentId(
-        @Param() params,
-        @Query() query
-    ): Promise<SymptomDTO[]> {
-        return this.repertoryService.getChildSymptomsByParentId(params.id);
+    @Get("/symptoms/:id")
+    getSymptomsById(@Param() { id }): Promise<SymptomDTO> {
+        return this.repertoryService.getSymptomById(id);
     }
 
     @UseGuards(JwtAuthGuard)
     @Post("/symptoms")
     async createSymptom(@Body() symptom: SymptomBodyDTO): Promise<void> {
         await this.repertoryService.createSymptom(symptom);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Post("/symptoms/bulkCreate")
+    async bulkCreateSymptoms(@Body() body: any[]): Promise<void> {
+        const bulkCreate = async (
+            symptoms,
+            parent_id: number = null
+        ): Promise<void> => {
+            if (parent_id) {
+                const parent = await this.repertoryService.getSymptomById(
+                    parent_id
+                );
+                if (!parent) {
+                    throw new HttpException(
+                        "symptoms/parentDontExist",
+                        HttpStatus.BAD_REQUEST
+                    );
+                }
+                for (const symptom of symptoms) {
+                    const category = await this.repertoryService.getCategoryById(
+                        symptom.category_id
+                    );
+                    if (!category) {
+                        throw new HttpException(
+                            "symptoms/categoryDontExist",
+                            HttpStatus.BAD_REQUEST
+                        );
+                    }
+                    const newSymptom = await this.repertoryService.createSymptom(
+                        {
+                            ...symptom,
+                            parent_id: parent,
+                            category_id: category.category_id,
+                        }
+                    );
+                    if (symptom.childs) {
+                        await bulkCreate(symptom.childs, newSymptom.symptom_id);
+                    }
+                }
+            } else {
+                for (const symptom of symptoms) {
+                    const category = await this.repertoryService.getCategoryById(
+                        symptom.category_id
+                    );
+                    if (!category) {
+                        throw new HttpException(
+                            "symptoms/categoryDontExist",
+                            HttpStatus.BAD_REQUEST
+                        );
+                    }
+                    const newSymptom = await this.repertoryService.createSymptom(
+                        {
+                            ...symptom,
+                            category_id: category.category_id,
+                        }
+                    );
+                    if (symptom.childs) {
+                        await bulkCreate(symptom.childs, newSymptom.symptom_id);
+                    }
+                }
+            }
+        };
+        await bulkCreate(body);
     }
 
     @UseGuards(JwtAuthGuard)
