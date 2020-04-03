@@ -49,9 +49,8 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/categories")
-    createCategory(@Body() category: CategoryBodyDTO): Promise<CategoryDTO> {
-        // TODO: do empty response
-        return this.repertoryService.createCategory(category);
+    async createCategory(@Body() category: CategoryBodyDTO): Promise<void> {
+        await this.repertoryService.createCategory(category);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -62,11 +61,10 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/medications")
-    createMedication(
+    async createMedication(
         @Body() medication: MedicationBodyDTO
-    ): Promise<MedicationDTO> {
-        // TODO: do empty response
-        return this.repertoryService.createMedication(medication);
+    ): Promise<void> {
+        await this.repertoryService.createMedication(medication);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -77,9 +75,8 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/symptoms")
-    createSymptom(@Body() symptom: SymptomBodyDTO): Promise<SymptomDTO> {
-        // TODO: do empty response
-        return this.repertoryService.createSymptom(symptom);
+    async createSymptom(@Body() symptom: SymptomBodyDTO): Promise<void> {
+        await this.repertoryService.createSymptom(symptom);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -100,9 +97,7 @@ export class RepertoryController {
                 })
             );
         }
-        const arrayOfMedicationsId = intersection(
-            arrayOfSymptomsMedications
-        );
+        const arrayOfMedicationsId = intersection(arrayOfSymptomsMedications);
         return arrayOfMedicationsId.map((id) =>
             arrayOfMedications.find((m) => m.medication_id === id)
         );
