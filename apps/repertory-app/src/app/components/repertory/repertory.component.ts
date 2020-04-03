@@ -1,69 +1,86 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
-import {MatChipInputEvent} from "@angular/material/chips";
-import {map, startWith} from "rxjs/operators";
-import {Observable} from "rxjs";
-import {FormControl} from "@angular/forms";
-import {COMMA, ENTER} from "@angular/cdk/keycodes";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+    MatAutocomplete,
+    MatAutocompleteSelectedEvent,
+} from "@angular/material/autocomplete";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { map, startWith } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { FormControl } from "@angular/forms";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { RestApiService } from "../../services/rest-api.service";
+import { CategoryDTO } from "../../../../../../common/dto/category.dto";
 
 @Component({
-  selector: 'brvns-repertory-repertory',
-  templateUrl: './repertory.component.html',
-  styleUrls: ['./repertory.component.scss']
+    selector: "brvns-repertory-repertory",
+    templateUrl: "./repertory.component.html",
+    styleUrls: ["./repertory.component.scss"],
 })
-export class RepertoryComponent {
-    visible = true;
-    selectable = true;
-    removable = true;
-    separatorKeysCodes: number[] = [ENTER, COMMA];
-    fruitCtrl = new FormControl();
-    filteredFruits: Observable<string[]>;
-    fruits: string[] = [];
-    allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+export class RepertoryComponent implements OnInit {
+    public loading = true;
+    public separatorKeysCodes: number[] = [ENTER, COMMA];
+    public categoryCtrl = new FormControl();
+    public filteredCategories: Observable<CategoryDTO[]>;
+    public inputCategories: string[] = [];
+    public allCategories: CategoryDTO[] = [];
 
-    @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
-    @ViewChild('auto') matAutocomplete: MatAutocomplete;
+    @ViewChild("categoryInput") categoryInput: ElementRef<HTMLInputElement>;
+    @ViewChild("autoCategory") autoCategory: MatAutocomplete;
 
-    constructor() {
-        this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+    constructor(private restApiService: RestApiService) {
+        this.filteredCategories = this.categoryCtrl.valueChanges.pipe(
             startWith(null),
-            map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+            map((category: CategoryDTO | null) =>
+                category
+                    ? this._filter(category.title)
+                    : this.allCategories.slice()
+            )
+        );
+    }
+
+    ngOnInit(): void {
+        this.restApiService.getAllCategories().subscribe((res) => {
+            this.allCategories = res;
+            this.loading = false;
+        });
     }
 
     add(event: MatChipInputEvent): void {
         const input = event.input;
         const value = event.value;
 
-        // Add our fruit
-        if ((value || '').trim()) {
-            this.fruits.push(value.trim());
+        // Add our category
+        if ((value || "").trim()) {
+            this.inputCategories.push(value);
         }
 
         // Reset the input value
         if (input) {
-            input.value = '';
+            input.value = "";
         }
 
-        this.fruitCtrl.setValue(null);
+        this.categoryCtrl.setValue(null);
     }
 
     remove(fruit: string): void {
-        const index = this.fruits.indexOf(fruit);
+        const index = this.inputCategories.indexOf(fruit);
 
         if (index >= 0) {
-            this.fruits.splice(index, 1);
+            this.inputCategories.splice(index, 1);
         }
     }
 
     selected(event: MatAutocompleteSelectedEvent): void {
-        this.fruits.push(event.option.viewValue);
-        this.fruitInput.nativeElement.value = '';
-        this.fruitCtrl.setValue(null);
+        this.inputCategories.push(event.option.viewValue);
+        this.categoryInput.nativeElement.value = "";
+        this.categoryCtrl.setValue(null);
     }
 
-    private _filter(value: string): string[] {
+    private _filter(value: string): CategoryDTO[] {
         const filterValue = value.toLowerCase();
 
-        return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+        return this.allCategories.filter((category) =>
+            category.title.toLowerCase().startsWith(filterValue)
+        );
     }
 }
