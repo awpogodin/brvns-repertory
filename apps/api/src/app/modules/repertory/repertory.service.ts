@@ -63,7 +63,9 @@ export class RepertoryService {
     }
 
     getSymptomById(id: number): Promise<SymptomDAO> {
-        return this.symptomRepository.findOne(id);
+        return this.symptomRepository.findOne(id, {
+            relations: ["parent", "category"],
+        });
     }
 
     getSymptomsByCategoryId(id: number): Promise<SymptomDAO[]> {
@@ -71,6 +73,26 @@ export class RepertoryService {
             where: {
                 category: id,
             },
+            relations: ["parent", "category"],
+        });
+    }
+
+    getParentSymptomsByCategoryId(id: number): Promise<SymptomDAO[]> {
+        return this.symptomRepository.find({
+            where: {
+                category: id,
+                parent: null,
+            },
+            relations: ["parent", "category"],
+        });
+    }
+
+    getChildSymptomsByParentId(id: number): Promise<SymptomDAO[]> {
+        return this.symptomRepository.find({
+            where: {
+                parent: id,
+            },
+            relations: ["parent", "category"],
         });
     }
 

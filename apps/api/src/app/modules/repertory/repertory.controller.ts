@@ -5,6 +5,8 @@ import {
     Body,
     UseGuards,
     Request,
+    Param,
+    Query,
 } from "@nestjs/common";
 import { RepertoryService } from "./repertory.service";
 import { CategoryDTO } from "../../../../../../common/dto/category.dto";
@@ -71,6 +73,21 @@ export class RepertoryController {
     @Get("/symptoms")
     getSymptomsAll(): Promise<SymptomDTO[]> {
         return this.repertoryService.getSymptomsAll();
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("/symptoms/parents-by-category-id/:id")
+    getParentSymptomsByCategoryId(@Param() { id }): Promise<SymptomDTO[]> {
+        return this.repertoryService.getParentSymptomsByCategoryId(id);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get("/symptoms/childs-by-parent-id/")
+    getChildSymptomsByParentId(
+        @Param() params,
+        @Query() query
+    ): Promise<SymptomDTO[]> {
+        return this.repertoryService.getChildSymptomsByParentId(params.id);
     }
 
     @UseGuards(JwtAuthGuard)
