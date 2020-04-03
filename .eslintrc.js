@@ -22,6 +22,7 @@ module.exports = {
           allow: ['warn', 'error']
       }],
       '@typescript-eslint/indent': 'off',
+      '@typescript-eslint/camelcase': 'off',
       '@typescript-eslint/space-before-function-paren': ['error', {
           anonymous: 'always',
           named: 'never',

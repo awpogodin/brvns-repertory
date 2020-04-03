@@ -19,10 +19,9 @@ export class MedicationDAO {
     description: string;
 
     @ManyToMany(() => SymptomDAO, {
+        eager: true,
         nullable: true,
-        cascade: true,
-        onDelete: "CASCADE",
     })
     @JoinTable()
-    symptoms: Promise<SymptomDAO[]>;
+    symptoms: SymptomDAO[];
 }

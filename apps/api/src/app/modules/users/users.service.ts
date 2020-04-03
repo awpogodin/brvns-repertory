@@ -12,7 +12,7 @@ export class UsersService {
     ) {}
 
     getUsersAll(): Promise<UserDAO[]> {
-        return this.usersRepository.find({ relations: ["role"] });
+        return this.usersRepository.find();
     }
 
     findUserByEmail(email: string): Promise<UserDAO> {

@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CategoryDAO } from "../db/domain/category.dao";
-import { MedicationDAO } from "../db/domain/medication";
+import { MedicationDAO } from "../db/domain/medication.dao";
 import { SymptomDAO } from "../db/domain/symptom.dao";
 import { SymptomsMedicationsDAO } from "../db/domain/symptoms-medications.dao";
 import { CategoryBodyDTO } from "../../../../../../common/dto/category-body.dto";
@@ -39,7 +39,7 @@ export class RepertoryService {
     }
 
     getMedicationsAll(): Promise<MedicationDAO[]> {
-        return this.medicationRepository.find();
+        return this.medicationRepository.find({ relations: ["symptoms"] });
     }
 
     getMedicationById(id: number): Promise<MedicationDAO> {
@@ -51,9 +51,15 @@ export class RepertoryService {
     }
 
     getSymptomsAll(): Promise<SymptomDAO[]> {
-        return this.symptomRepository.find({
-            relations: ["parent_id", "category_id"],
-        });
+        // return this.symptomRepository.find({
+        //     relations: ["parent", "category", "medications"],
+        // });
+        return this.symptomRepository
+            .createQueryBuilder("symptom")
+            .leftJoinAndSelect("symptom.parent", "parent_id")
+            .leftJoinAndSelect("symptom.category", "category_id")
+            .leftJoinAndSelect("symptom.medications", "medication")
+            .getMany();
     }
 
     getSymptomById(id: number): Promise<SymptomDAO> {
@@ -63,7 +69,7 @@ export class RepertoryService {
     getSymptomsByCategoryId(id: number): Promise<SymptomDAO[]> {
         return this.symptomRepository.find({
             where: {
-                category_id: id,
+                category: id,
             },
         });
     }
@@ -76,7 +82,7 @@ export class RepertoryService {
                 HttpStatus.BAD_REQUEST
             );
         }
-        if (symptom.parent_id) {
+        if (category && symptom.parent_id) {
             const parent = await this.getSymptomById(symptom.parent_id);
             if (!parent) {
                 throw new HttpException(
@@ -119,11 +125,7 @@ export class RepertoryService {
                 HttpStatus.BAD_REQUEST
             );
         }
-        let isCustom = false;
-        const userRole = await this.usersService.getRoleById(user.role_id);
-        if (userRole.slug !== "ADMIN") {
-            isCustom = true;
-        }
+        const isCustom = false;
         return this.symptomsMedicationsRepository.save({
             symptom_id,
             medication_id,

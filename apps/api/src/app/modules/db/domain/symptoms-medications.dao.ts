@@ -6,7 +6,7 @@ import {
     JoinColumn,
 } from "typeorm";
 import { SymptomDAO } from "./symptom.dao";
-import { MedicationDAO } from "./medication";
+import { MedicationDAO } from "./medication.dao";
 
 @Entity()
 export class SymptomsMedicationsDAO {

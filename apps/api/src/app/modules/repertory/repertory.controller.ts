@@ -43,6 +43,7 @@ export class RepertoryController {
     createMedication(
         @Body() medication: MedicationBodyDTO
     ): Promise<MedicationDTO> {
+        // TODO: do empty response
         return this.repertoryService.createMedication(medication);
     }
 

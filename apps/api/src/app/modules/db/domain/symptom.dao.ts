@@ -7,7 +7,7 @@ import {
     ManyToMany,
 } from "typeorm";
 import { CategoryDAO } from "./category.dao";
-import { MedicationDAO } from "./medication";
+import { MedicationDAO } from "./medication.dao";
 
 @Entity()
 export class SymptomDAO {
@@ -23,14 +23,14 @@ export class SymptomDAO {
         onDelete: "CASCADE",
     })
     @JoinColumn({ name: "parent_id" })
-    parent: Promise<SymptomDAO>;
+    parent: SymptomDAO;
 
     @ManyToOne(() => CategoryDAO, {
         cascade: true,
         onDelete: "CASCADE",
     })
     @JoinColumn({ name: "category_id" })
-    category: Promise<CategoryDAO>;
+    category: CategoryDAO;
 
     @ManyToMany(() => MedicationDAO, {
         nullable: true,
@@ -38,5 +38,5 @@ export class SymptomDAO {
         onDelete: "CASCADE",
     })
     // @JoinTable()
-    medications: Promise<MedicationDAO[]>;
+    medications: MedicationDAO[];
 }
