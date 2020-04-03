@@ -1,0 +1,40 @@
+<div>
+    <brvns-repertory-heading title="Профиль"></brvns-repertory-heading>
+    <div *ngIf="loading" class="loading-spinner">
+        <mat-spinner color="accent"></mat-spinner>
+    </div>
+    <mat-card *ngIf="!loading && currentUser" class="card">
+        <div class="row">
+        <span class="field">
+        Имя:
+        </span>
+            <span class="value">
+        {{currentUser.name}}
+        </span>
+        </div>
+        <div class="row">
+        <span class="field">
+        Фамилия:
+        </span>
+            <span class="value">
+        {{currentUser.surname}}
+        </span>
+        </div>
+        <div class="row">
+        <span class="field">
+        Email:
+        </span>
+            <span class="value">
+        {{currentUser.email}}
+        </span>
+        </div>
+        <div class="row">
+        <span class="field">
+        Тип аккаунта:
+        </span>
+            <span class="value">
+        {{currentUser.role}}
+        </span>
+        </div>
+    </mat-card>
+</div>

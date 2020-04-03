@@ -20,7 +20,7 @@
         <span>Препараты</span>
     </button>
     <hr>
-    <button *ngIf="currentUser" mat-menu-item>
+    <button *ngIf="currentUser" mat-menu-item routerLink="/profile">
         <mat-icon>account_circle</mat-icon>
         <span>{{currentUser.name}}</span>
     </button>
