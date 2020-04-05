@@ -43,7 +43,6 @@
                 </tag-input>
             </div>
         </div>
-        {{inputSymptom | json}}
     </div>
     <div class="buttons">
         <button
@@ -61,8 +60,27 @@
             Добавить
         </button>
     </div>
-    meds:
-    {{medications | json}}
+    <div class="table" *ngIf="!loading">
+        <table mat-table [dataSource]="medications" class="table">
+            <ng-container matColumnDef="medication_id">
+                <th mat-header-cell *matHeaderCellDef> Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.medication_id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Название </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Описание </th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
 </div>
 
 <ng-template #loadingBlock>

@@ -3,6 +3,7 @@ import { RestApiService } from "../../services/rest-api.service";
 import { SymptomDTO } from "../../../../../../common/dto/symptom.dto";
 import codes from "../../../../../../common/response-codes";
 import { NotificationService } from "../../services/notification.service";
+import { MedicationDTO } from "../../../../../../common/dto/medication.dto";
 
 @Component({
     selector: "brvns-repertory-repertory",
@@ -16,7 +17,12 @@ export class RepertoryComponent implements OnInit {
     public inputSymptom = [];
     public listOfSymptoms = [];
 
-    public medications = [];
+    public displayedColumns: string[] = [
+        "medication_id",
+        "name",
+        "description",
+    ];
+    public medications: MedicationDTO[] = [];
     constructor(
         private restApiService: RestApiService,
         private notificationService: NotificationService

@@ -27,6 +27,7 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCardModule } from "@angular/material/card";
+import {MatTableModule} from "@angular/material/table";
 
 const routes: Routes = [
     {
@@ -82,6 +83,7 @@ const routes: Routes = [
         MatAutocompleteModule,
         MatProgressSpinnerModule,
         MatCardModule,
+        MatTableModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

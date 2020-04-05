@@ -16,8 +16,17 @@
     align-items: center;
 }
 
+.table {
+    width: 100%;
+}
+
 .loading {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.progress-bar {
+    margin: 15px 0;
+    min-height: 60px;
 }
