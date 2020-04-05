@@ -4,6 +4,8 @@ import { Observable } from "rxjs";
 import { UserDTO } from "../../../../../common/dto/user.dto";
 import { first } from "rxjs/operators";
 import { CategoryDTO } from "../../../../../common/dto/category.dto";
+import { SymptomDTO } from "../../../../../common/dto/symptom.dto";
+import { MedicationDTO } from "../../../../../common/dto/medication.dto";
 
 const API = "/api";
 
@@ -27,6 +29,31 @@ export class RestApiService {
     getAllCategories(): Observable<CategoryDTO[]> {
         return this.httpClient
             .get<CategoryDTO[]>(`${API}/repertory/categories`)
+            .pipe(first());
+    }
+
+    getParentSymptomsByCategories(
+        categories: string
+    ): Observable<SymptomDTO[]> {
+        return this.httpClient
+            .get<SymptomDTO[]>(
+                `${API}/repertory/symptoms?category_id=${categories}`
+            )
+            .pipe(first());
+    }
+
+    getChildSymptomsByParentId(id: number): Observable<SymptomDTO[]> {
+        return this.httpClient
+            .get<SymptomDTO[]>(`${API}/repertory/symptoms?parent_id=${id}`)
+            .pipe(first());
+    }
+
+    getMedicationsBySymptoms(symptoms: number[]): Observable<MedicationDTO[]> {
+        return this.httpClient
+            .post<MedicationDTO[]>(
+                `${API}/repertory/medications-by-symptoms`,
+                symptoms
+            )
             .pipe(first());
     }
 }

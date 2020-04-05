@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component";
 import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { TagInputModule } from "ngx-chips";
 import { NavbarComponent } from "./components/navbar/navbar.component";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
@@ -24,8 +25,8 @@ import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { ProfileComponent } from "./components/profile/profile.component";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatCardModule} from "@angular/material/card";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatCardModule } from "@angular/material/card";
 
 const routes: Routes = [
     {
@@ -63,13 +64,14 @@ const routes: Routes = [
         ProfileComponent,
     ],
     imports: [
+        RouterModule.forRoot(routes),
         BrowserModule,
         HttpClientModule,
         BrowserAnimationsModule,
         FormsModule,
         MatIconModule,
         MatButtonModule,
-        RouterModule.forRoot(routes),
+        TagInputModule,
         MatMenuModule,
         MatFormFieldModule,
         MatInputModule,

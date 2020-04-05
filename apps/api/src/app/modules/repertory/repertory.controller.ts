@@ -103,18 +103,24 @@ export class RepertoryController {
             }));
         }
         if (query.category_id) {
-            const category = await this.repertoryService.getCategoryById(
-                query.category_id
-            );
-            if (!category) {
-                throw new HttpException(
-                    "symptoms/categoryDontExist",
-                    HttpStatus.BAD_REQUEST
+            const arrOfCategories = query.category_id.split(",");
+            const result = [];
+            for (const category_id of arrOfCategories) {
+                const category = await this.repertoryService.getCategoryById(
+                    category_id
                 );
+                if (!category) {
+                    throw new HttpException(
+                        "symptoms/categoryDontExist",
+                        HttpStatus.BAD_REQUEST
+                    );
+                }
+                const symptoms = await this.repertoryService.getParentSymptomsByCategoryId(
+                    category.category_id
+                );
+                result.push(...symptoms);
             }
-            return this.repertoryService.getParentSymptomsByCategoryId(
-                category.category_id
-            );
+            return result;
         }
         return this.repertoryService.getSymptomsAll();
     }

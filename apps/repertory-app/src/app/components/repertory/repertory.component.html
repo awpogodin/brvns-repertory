@@ -1,29 +1,59 @@
 <div>
     <brvns-repertory-heading title="Реперторий"></brvns-repertory-heading>
-    <mat-form-field class="form">
-        <mat-chip-list class="form__input" #chipList aria-label="Category selection">
-            <mat-chip
-                *ngFor="let category of inputCategories"
-                selectable
-                removable
-                (removed)="remove(category)">
-                {{category}}
-                <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-            <input
-                [disabled]="loading"
-                placeholder="Категория"
-                #categoryInput
-                [formControl]="categoryCtrl"
-                [matAutocomplete]="autoCategory"
-                [matChipInputFor]="chipList"
-                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="add($event)">
-        </mat-chip-list>
-        <mat-autocomplete #autoCategory="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
-                {{category}}
-            </mat-option>
-        </mat-autocomplete>
-    </mat-form-field>
+    <div class="content">
+        <div class="form" *ngIf="!loading; else loadingBlock">
+            <div class="form__input">
+                <tag-input
+                    secondaryPlaceholder="Введите реперторий"
+                    placeholder="+ реперторий"
+                    [(ngModel)]="inputCategory"
+                    [identifyBy]="'category_id'"
+                    [displayBy]="'title'"
+                    [onlyFromAutocomplete]="true"
+                    (onAdd)="onAddCategory()"
+                    (onRemove)="onRemoveCategory()"
+                >
+                    <tag-input-dropdown
+                        [identifyBy]="'category_id'"
+                        [displayBy]="'title'"
+                        [showDropdownIfEmpty]="true"
+                        [autocompleteItems]="listOfCategories"
+                    >
+                    </tag-input-dropdown>
+                </tag-input>
+            </div>
+            <div class="form__input" *ngIf="inputCategory.length !== 0">
+                <tag-input
+                    secondaryPlaceholder="Введите симптом"
+                    placeholder="+ симптом"
+                    [(ngModel)]="inputSymptom"
+                    [identifyBy]="'symptom_id'"
+                    [displayBy]="'name'"
+                    [onlyFromAutocomplete]="true"
+                    (onAdd)="onAddSymptom($event)"
+                >
+                    <tag-input-dropdown
+                        [identifyBy]="'symptom_id'"
+                        [displayBy]="'name'"
+                        [showDropdownIfEmpty]="true"
+                        [autocompleteItems]="listOfSymptoms"
+                    >
+                    </tag-input-dropdown>
+                </tag-input>
+            </div>
+        </div>
+        {{inputSymptom | json}}
+    </div>
+    <div class="buttons">
+        <button mat-button [disabled]="loading" (click)="updateMedications()">Обновить</button>
+        <button mat-button color="accent">Добавить</button>
+    </div>
+    meds:
+    {{medications | json}}
 </div>
+
+<ng-template #loadingBlock>
+    <div class="loading">
+        <mat-spinner color="accent"></mat-spinner>
+    </div>
+</ng-template>
