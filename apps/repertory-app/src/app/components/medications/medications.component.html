@@ -1,0 +1,47 @@
+<div>
+    <brvns-repertory-heading title="Препараты"></brvns-repertory-heading>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" class="form">
+        <mat-form-field class="form__input" hideRequiredMarker>
+            <mat-label>Название</mat-label>
+            <input matInput formControlName="name" type="text" required>
+            <mat-error *ngIf="name.invalid">{{getNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="form__input" hideRequiredMarker>
+            <mat-label>Описание</mat-label>
+            <input matInput formControlName="description" type="text">
+            <mat-error *ngIf="description.invalid">{{getDescriptionErrorMessage()}}</mat-error>
+        </mat-form-field>
+        <div class="form__progress">
+            <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+        </div>
+        <button [disabled]="form.invalid || loading" class="form__btn" mat-button type="submit">Добавить</button>
+    </form>
+    <div class="table" *ngIf="!loadingMedications && medications; else loadingBlock">
+        <table mat-table [dataSource]="medications" class="table">
+            <ng-container matColumnDef="medication_id">
+                <th mat-header-cell *matHeaderCellDef> Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.medication_id}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Название </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef> Описание </th>
+                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+<ng-template #loadingBlock>
+    <div class="loading">
+        <mat-spinner color="accent"></mat-spinner>
+    </div>
+</ng-template>

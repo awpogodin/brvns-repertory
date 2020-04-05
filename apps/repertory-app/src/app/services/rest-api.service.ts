@@ -6,6 +6,7 @@ import { first } from "rxjs/operators";
 import { CategoryDTO } from "../../../../../common/dto/category.dto";
 import { SymptomDTO } from "../../../../../common/dto/symptom.dto";
 import { MedicationDTO } from "../../../../../common/dto/medication.dto";
+import { MedicationBodyDTO } from "../../../../../common/dto/medication-body.dto";
 
 const API = "/api";
 
@@ -54,6 +55,18 @@ export class RestApiService {
                 `${API}/repertory/medications-by-symptoms`,
                 symptoms
             )
+            .pipe(first());
+    }
+
+    getAllMedications(): Observable<MedicationDTO[]> {
+        return this.httpClient
+            .get<MedicationDTO[]>(`${API}/repertory/medications`)
+            .pipe(first());
+    }
+
+    createMedication(body: MedicationBodyDTO): Observable<any> {
+        return this.httpClient
+            .post(`${API}/repertory/medications`, body)
             .pipe(first());
     }
 }

@@ -27,7 +27,9 @@ import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { ProfileComponent } from "./components/profile/profile.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCardModule } from "@angular/material/card";
-import {MatTableModule} from "@angular/material/table";
+import { MatTableModule } from "@angular/material/table";
+import { MedicationsComponent } from "./components/medications/medications.component";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 const routes: Routes = [
     {
@@ -38,6 +40,11 @@ const routes: Routes = [
     {
         path: "profile",
         component: ProfileComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: "medications",
+        component: MedicationsComponent,
         canActivate: [AuthGuard],
     },
     {
@@ -63,6 +70,7 @@ const routes: Routes = [
         HeadingComponent,
         RegisterFormComponent,
         ProfileComponent,
+        MedicationsComponent,
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -84,6 +92,7 @@ const routes: Routes = [
         MatProgressSpinnerModule,
         MatCardModule,
         MatTableModule,
+        MatPaginatorModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
