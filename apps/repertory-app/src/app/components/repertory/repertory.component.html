@@ -45,8 +45,20 @@
         {{inputSymptom | json}}
     </div>
     <div class="buttons">
-        <button mat-button [disabled]="loading" (click)="updateMedications()">Обновить</button>
-        <button mat-button [disabled]="loading" color="accent">Добавить</button>
+        <button
+            mat-button
+            [disabled]="loading || inputSymptom.length === 0"
+            (click)="updateMedications()"
+        >
+            Обновить
+        </button>
+        <button
+            mat-button
+            [disabled]="loading || inputSymptom.length === 0"
+            color="accent"
+        >
+            Добавить
+        </button>
     </div>
     meds:
     {{medications | json}}
