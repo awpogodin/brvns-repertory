@@ -46,7 +46,7 @@
     </div>
     <div class="buttons">
         <button mat-button [disabled]="loading" (click)="updateMedications()">Обновить</button>
-        <button mat-button color="accent">Добавить</button>
+        <button mat-button [disabled]="loading" color="accent">Добавить</button>
     </div>
     meds:
     {{medications | json}}

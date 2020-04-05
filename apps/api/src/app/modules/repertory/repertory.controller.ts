@@ -118,7 +118,12 @@ export class RepertoryController {
                 const symptoms = await this.repertoryService.getParentSymptomsByCategoryId(
                     category.category_id
                 );
-                result.push(...symptoms);
+                result.push(
+                    ...symptoms.map((symptom) => ({
+                        ...symptom,
+                        name: `${category.title}: ${symptom.name}`,
+                    }))
+                );
             }
             return result;
         }
