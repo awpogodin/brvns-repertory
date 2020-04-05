@@ -11,12 +11,12 @@
             <input matInput formControlName="description" type="text">
             <mat-error *ngIf="description.invalid">{{getDescriptionErrorMessage()}}</mat-error>
         </mat-form-field>
-        <div class="form__progress">
+        <div class="progress-bar">
             <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
         </div>
         <button [disabled]="form.invalid || loading" class="form__btn" mat-button type="submit">Добавить</button>
     </form>
-    <div class="table" *ngIf="!loadingMedications && medications; else loadingBlock">
+    <div class="table">
         <table mat-table [dataSource]="medications" class="table">
             <ng-container matColumnDef="medication_id">
                 <th mat-header-cell *matHeaderCellDef> Id </th>
@@ -36,12 +36,10 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        <div class="progress-bar">
+            <mat-progress-bar *ngIf="loadingMedications" mode="indeterminate"></mat-progress-bar>
+        </div>
     </div>
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 </div>
 
-<ng-template #loadingBlock>
-    <div class="loading">
-        <mat-spinner color="accent"></mat-spinner>
-    </div>
-</ng-template>

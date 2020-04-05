@@ -5,10 +5,10 @@
         width: 100%;
         font-size: 16px;
     }
+}
 
-    &__progress {
-        min-height: 30px;
-    }
+.progress-bar {
+    min-height: 30px;
 }
 
 .table {
@@ -16,8 +16,3 @@
     width: 100%;
 }
 
-.loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
