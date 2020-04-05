@@ -36,7 +36,7 @@ export class RepertoryComponent implements OnInit {
         );
     }
 
-    public onAddCategory(): void {
+    private fetchParentSymptoms(): void {
         this.loading = true;
         const categories = this.inputCategory
             .map((c) => c.category_id)
@@ -54,10 +54,16 @@ export class RepertoryComponent implements OnInit {
         );
     }
 
+    public onAddCategory(): void {
+        this.fetchParentSymptoms();
+    }
+
     public onRemoveCategory(): void {
-        if (this.inputSymptom.length) {
-            this.inputSymptom.splice(0, this.inputSymptom.length);
-            this.listOfSymptoms.splice(0, this.listOfSymptoms.length);
+        this.inputSymptom.splice(0, this.inputSymptom.length);
+        this.listOfSymptoms.splice(0, this.listOfSymptoms.length);
+        this.medications = [];
+        if (this.inputCategory.length) {
+            this.fetchParentSymptoms();
         }
     }
 
@@ -69,6 +75,7 @@ export class RepertoryComponent implements OnInit {
                 (res) => {
                     this.listOfSymptoms.push(...res);
                     this.loading = false;
+                    this.updateMedications();
                 },
                 (err) => {
                     const msg = codes[err] || "Что-то пошло не так";
@@ -78,10 +85,47 @@ export class RepertoryComponent implements OnInit {
             );
     }
 
+    private findChildsSymptoms(id: number): SymptomDTO[] {
+        return (
+            this.listOfSymptoms.filter((s) => s.parent?.symptom_id === id) || []
+        );
+    }
+
+    private deepFindSymptomChilds(id): SymptomDTO[] {
+        const result = [];
+        const findChildsOfSymptoms = (symptoms): void => {
+            symptoms.forEach((s) => {
+                result.push(s);
+                const childs = this.findChildsSymptoms(s.symptom_id);
+                if (childs) {
+                    findChildsOfSymptoms(childs);
+                }
+            });
+        };
+        findChildsOfSymptoms(this.findChildsSymptoms(id));
+        return result;
+    }
+
+    public onRemoveSymptom(symptom: SymptomDTO): void {
+        this.loading = true;
+        const arrOfSymptomsToDelete = this.deepFindSymptomChilds(
+            symptom.symptom_id
+        );
+        arrOfSymptomsToDelete.forEach((ss) => {
+            this.listOfSymptoms = this.listOfSymptoms.filter(
+                (s) => s.symptom_id !== ss.symptom_id
+            );
+            this.inputSymptom = this.inputSymptom.filter(
+                (s) => s.symptom_id !== ss.symptom_id
+            );
+        });
+        this.loading = false;
+        this.updateMedications();
+    }
+
     public updateMedications(): void {
         this.loading = true;
         const body = this.inputSymptom;
-        console.log(body);
         this.restApiService.getMedicationsBySymptoms(body).subscribe((res) => {
             this.medications = res;
             this.loading = false;

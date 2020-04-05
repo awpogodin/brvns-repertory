@@ -31,6 +31,7 @@
                     [displayBy]="'name'"
                     [onlyFromAutocomplete]="true"
                     (onAdd)="onAddSymptom($event)"
+                    (onRemove)="onRemoveSymptom($event)"
                 >
                     <tag-input-dropdown
                         [identifyBy]="'symptom_id'"
