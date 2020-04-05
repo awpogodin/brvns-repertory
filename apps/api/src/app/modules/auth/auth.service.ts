@@ -33,7 +33,6 @@ export class AuthService {
                 const payload = {
                     sub: user.id,
                     name: user.name,
-                    iat: Number(Date.now()),
                 };
                 const accessToken = this.jwtService.sign(payload, {
                     expiresIn: this.configService.get("tokenExpiresIn"),

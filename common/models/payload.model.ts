@@ -1,5 +1,6 @@
 export interface PayloadModel {
     sub: number;
     name: string;
-    iat: number;
+    iat?: number;
+    exp?: number;
 }
