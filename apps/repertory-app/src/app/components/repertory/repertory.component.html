@@ -2,7 +2,7 @@
     <brvns-repertory-heading title="Реперторий"></brvns-repertory-heading>
     <div class="content">
         <div class="form" *ngIf="!loading; else loadingBlock">
-            <div class="form__input">
+            <div class="form__input" *ngIf="listOfCategories.length !== 0">
                 <tag-input
                     secondaryPlaceholder="Введите реперторий"
                     placeholder="+ реперторий"
@@ -22,7 +22,7 @@
                     </tag-input-dropdown>
                 </tag-input>
             </div>
-            <div class="form__input" *ngIf="inputCategory.length !== 0">
+            <div class="form__input" *ngIf="listOfSymptoms.length !== 0">
                 <tag-input
                     secondaryPlaceholder="Введите симптом"
                     placeholder="+ симптом"

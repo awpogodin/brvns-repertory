@@ -144,7 +144,37 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/symptoms/bulkCreate")
-    async bulkCreateSymptoms(@Body() body: any[]): Promise<void> {
+    async bulkCreateSymptoms(
+        @Request() req,
+        @Body() body: any[]
+    ): Promise<void> {
+        const user_id = req.user.id;
+        const bulkCreateAndBindingMedications = async (
+            meds: string[],
+            symptom_id: number
+        ): Promise<void> => {
+            for (const med of meds) {
+                const medication = await this.repertoryService.getMedicationByName(
+                    med
+                );
+                if (medication) {
+                    await this.repertoryService.addSymptomToMedication(
+                        symptom_id,
+                        medication.medication_id,
+                        user_id
+                    );
+                } else {
+                    const newMedication = await this.repertoryService.createMedication(
+                        { name: med, description: "" }
+                    );
+                    await this.repertoryService.addSymptomToMedication(
+                        symptom_id,
+                        newMedication.medication_id,
+                        user_id
+                    );
+                }
+            }
+        };
         const bulkCreate = async (
             symptoms,
             parent_id: number = null
@@ -179,6 +209,10 @@ export class RepertoryController {
                     if (symptom.childs) {
                         await bulkCreate(symptom.childs, newSymptom.symptom_id);
                     }
+                    await bulkCreateAndBindingMedications(
+                        symptom.medications || [],
+                        newSymptom.symptom_id
+                    );
                 }
             } else {
                 for (const symptom of symptoms) {
@@ -200,6 +234,10 @@ export class RepertoryController {
                     if (symptom.childs) {
                         await bulkCreate(symptom.childs, newSymptom.symptom_id);
                     }
+                    await bulkCreateAndBindingMedications(
+                        symptom.medications || [],
+                        newSymptom.symptom_id
+                    );
                 }
             }
         };

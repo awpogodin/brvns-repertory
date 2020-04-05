@@ -46,6 +46,14 @@ export class RepertoryService {
         return this.medicationRepository.findOne(id);
     }
 
+    getMedicationByName(name: string): Promise<MedicationDAO> {
+        return this.medicationRepository.findOne({
+            where: {
+                name: name,
+            },
+        });
+    }
+
     createMedication(medication: MedicationBodyDTO): Promise<MedicationDAO> {
         return this.medicationRepository.save(medication);
     }
