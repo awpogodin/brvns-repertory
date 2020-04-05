@@ -247,11 +247,21 @@ export class RepertoryController {
     @UseGuards(JwtAuthGuard)
     @Post("/medications-by-symptoms")
     async getMedicationBySymptoms(
-        @Body() arrOfSymptomsId: number[]
+        @Body() arrOfSymptoms: SymptomDTO[]
     ): Promise<MedicationDTO[]> {
         const arrayOfSymptomsMedications = [];
         const arrayOfMedications = [];
-        for (const id of arrOfSymptomsId) {
+        const arrayOfChildsOfSymptoms = [];
+        for (const symptom of arrOfSymptoms) {
+            const parents =
+                arrOfSymptoms.filter(
+                    (s) => s.parent?.symptom_id === symptom.symptom_id
+                ) || [];
+            if (parents.length === 0) {
+                arrayOfChildsOfSymptoms.push(symptom.symptom_id);
+            }
+        }
+        for (const id of arrayOfChildsOfSymptoms) {
             const symptomsMedications = await this.repertoryService.getMedicationsBySymptomId(
                 id
             );

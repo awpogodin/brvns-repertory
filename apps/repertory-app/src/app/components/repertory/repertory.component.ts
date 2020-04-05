@@ -80,7 +80,8 @@ export class RepertoryComponent implements OnInit {
 
     public updateMedications(): void {
         this.loading = true;
-        const body = this.inputSymptom.map((s) => s.symptom_id);
+        const body = this.inputSymptom;
+        console.log(body);
         this.restApiService.getMedicationsBySymptoms(body).subscribe((res) => {
             this.medications = res;
             this.loading = false;

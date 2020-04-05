@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { RegisterRequestDTO } from "../../../../../common/dto/register-request.dto";
 import { UserDTO } from "../../../../../common/dto/user.dto";
 import { NotificationService } from "./notification.service";
+import {Router} from "@angular/router";
 
 const API = "/api/auth";
 const USER = "current_user";
@@ -32,6 +33,7 @@ export class AuthService {
 
     constructor(
         private httpClient: HttpClient,
+        private router: Router,
         private notificationService: NotificationService
     ) {
         this.currentUserSubject = new BehaviorSubject<LoginResponseDTO>(
@@ -68,5 +70,6 @@ export class AuthService {
     logout(): void {
         storage.removeUser();
         this.currentUserSubject.next(null);
+        this.router.navigate(["/login"]);
     }
 }
