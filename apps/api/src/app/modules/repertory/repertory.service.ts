@@ -58,6 +58,17 @@ export class RepertoryService {
         return this.medicationRepository.save(medication);
     }
 
+    async removeMedicationById(id: number): Promise<void> {
+        const medication = await this.medicationRepository.findOne(id);
+        if (!medication) {
+            throw new HttpException(
+                "medications/doesNotExist",
+                HttpStatus.NOT_FOUND
+            );
+        }
+        await this.medicationRepository.remove(medication);
+    }
+
     getSymptomsAll(): Promise<SymptomDAO[]> {
         return this.symptomRepository.find({
             relations: ["parent", "category"],

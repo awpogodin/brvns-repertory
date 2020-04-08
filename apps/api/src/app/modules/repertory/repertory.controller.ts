@@ -9,6 +9,7 @@ import {
     Query,
     HttpException,
     HttpStatus,
+    Delete,
 } from "@nestjs/common";
 import { RepertoryService } from "./repertory.service";
 import { CategoryDTO } from "../../../../../../common/dto/category.dto";
@@ -69,6 +70,12 @@ export class RepertoryController {
         @Body() medication: MedicationBodyDTO
     ): Promise<void> {
         await this.repertoryService.createMedication(medication);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Delete("/medications/:id")
+    removeMedicationById(@Param() { id }): Promise<void> {
+        return this.repertoryService.removeMedicationById(id);
     }
 
     @UseGuards(JwtAuthGuard)

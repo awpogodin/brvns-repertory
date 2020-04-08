@@ -4,6 +4,7 @@ const codes = {
     "auth/userExist": "Пользователь уже существует",
     "symptoms/categoryDontExist": "Категория не существует",
     "symptoms/parentDontExist": "Родительского симптома не существует",
+    "medications/doesNotExist": "Препарат не найден",
 };
 
 export default codes;
