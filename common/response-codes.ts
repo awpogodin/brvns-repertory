@@ -6,6 +6,7 @@ const codes = {
     "symptoms/parentDontExist": "Родительского симптома не существует",
     "medications/doesNotExist": "Препарат не найден",
     "users/noPermissions": "Недостаточно прав",
+    "auth/unauthorized": "Вы не авторизованы",
 };
 
 export default codes;

@@ -7,6 +7,7 @@ import { CategoryDTO } from "../../../../../common/dto/category.dto";
 import { SymptomDTO } from "../../../../../common/dto/symptom.dto";
 import { MedicationDTO } from "../../../../../common/dto/medication.dto";
 import { MedicationBodyDTO } from "../../../../../common/dto/medication-body.dto";
+import { SymptomToMedicationBodyDTO } from "../../../../../common/dto/symptom-to-medication-body.dto";
 
 const API = "/api";
 
@@ -73,6 +74,12 @@ export class RestApiService {
     removeMedication(id: number): Observable<any> {
         return this.httpClient
             .delete(`${API}/repertory/medications/${id}`)
+            .pipe(first());
+    }
+
+    addMedicationToSymptom(body: SymptomToMedicationBodyDTO): Observable<any> {
+        return this.httpClient
+            .post(`${API}/repertory/symptom-to-medication`, body)
             .pipe(first());
     }
 }

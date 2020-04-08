@@ -152,10 +152,14 @@ export class RepertoryService {
         });
     }
 
-    getMedicationsBySymptomId(id: number): Promise<SymptomsMedicationsDAO[]> {
+    getMedicationsBySymptomId(
+        id: number,
+        isCustom = false
+    ): Promise<SymptomsMedicationsDAO[]> {
         return this.symptomsMedicationsRepository.find({
             where: {
                 symptom: id,
+                isCustom: isCustom,
             },
             relations: ["symptom", "medication"],
         });
