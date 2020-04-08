@@ -41,6 +41,7 @@ export class MedicationsComponent implements OnInit {
         "medication_id",
         "name",
         "description",
+        "actions",
     ];
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -71,7 +72,7 @@ export class MedicationsComponent implements OnInit {
             errors.push("Длина должна быть не менее 2 символов");
         }
         if (this.name.errors.maxlength) {
-            errors.push("Длина должна быть не более 25 символов");
+            errors.push("Длина должна быть не более 15 символов");
         }
         return errors;
     }
@@ -79,7 +80,7 @@ export class MedicationsComponent implements OnInit {
     getDescriptionErrorMessage(): string[] {
         const errors = [];
         if (this.description.errors.maxlength) {
-            errors.push("Длина должна быть не более 15 символов");
+            errors.push("Длина должна быть не более 25 символов");
         }
         return errors;
     }
@@ -117,6 +118,19 @@ export class MedicationsComponent implements OnInit {
                 const msg = codes[err] || "Что-то пошло не так";
                 this.notificationService.notification$.next(msg);
                 this.loadingMedications = false;
+            }
+        );
+    }
+
+    public onRemove(id: number): void {
+        this.restApiService.removeMedication(id).subscribe(
+            () => {
+                this.fetchMedications();
+                this.notificationService.notification$.next("Препарат удален");
+            },
+            (err) => {
+                const msg = codes[err] || "Что-то пошло не так";
+                this.notificationService.notification$.next(msg);
             }
         );
     }

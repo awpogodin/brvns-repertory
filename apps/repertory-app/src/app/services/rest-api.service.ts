@@ -69,4 +69,10 @@ export class RestApiService {
             .post(`${API}/repertory/medications`, body)
             .pipe(first());
     }
+
+    removeMedication(id: number): Observable<any> {
+        return this.httpClient
+            .delete(`${API}/repertory/medications/${id}`)
+            .pipe(first());
+    }
 }
