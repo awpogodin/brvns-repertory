@@ -1,14 +1,16 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { CategoryDAO } from "../db/domain/category.dao";
-import { MedicationDAO } from "../db/domain/medication.dao";
-import { SymptomDAO } from "../db/domain/symptom.dao";
-import { SymptomsMedicationsDAO } from "../db/domain/symptoms-medications.dao";
-import { CategoryBodyDTO } from "../../../../../../common/dto/category-body.dto";
-import { MedicationBodyDTO } from "../../../../../../common/dto/medication-body.dto";
-import { SymptomBodyDTO } from "../../../../../../common/dto/symptom-body.dto";
-import { UsersService } from "../users/users.service";
+import {HttpException, HttpStatus, Injectable} from "@nestjs/common";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Repository} from "typeorm";
+import {CategoryDAO} from "../db/domain/category.dao";
+import {MedicationDAO} from "../db/domain/medication.dao";
+import {SymptomDAO} from "../db/domain/symptom.dao";
+import {SymptomsMedicationsDAO} from "../db/domain/symptoms-medications.dao";
+import {CategoryBodyDTO} from "../../../../../../common/dto/category-body.dto";
+import {MedicationBodyDTO} from "../../../../../../common/dto/medication-body.dto";
+import {SymptomBodyDTO} from "../../../../../../common/dto/symptom-body.dto";
+import {UsersService} from "../users/users.service";
+import {UserDAO} from "../db/domain/user.dao";
+import {RoleEnum} from "../db/domain/role.enum";
 
 @Injectable()
 export class RepertoryService {
@@ -58,8 +60,15 @@ export class RepertoryService {
         return this.medicationRepository.save(medication);
     }
 
-    async removeMedicationById(id: number): Promise<void> {
-        const medication = await this.medicationRepository.findOne(id);
+    async removeMedicationById(id: number, user_id: number): Promise<void> {
+        const user: UserDAO = await this.usersService.findUserById(user_id);
+        if (!user || user.role !== RoleEnum.ADMIN) {
+            throw new HttpException(
+                "users/noPermissions",
+                HttpStatus.CONFLICT
+            );
+        }
+        const medication: MedicationDAO = await this.medicationRepository.findOne(id);
         if (!medication) {
             throw new HttpException(
                 "medications/doesNotExist",
@@ -155,22 +164,41 @@ export class RepertoryService {
     async addSymptomToMedication(
         symptom_id: number,
         medication_id: number,
-        user_id: number
+        user_id: number = null
     ): Promise<SymptomsMedicationsDAO> {
-        const symptom = await this.getSymptomById(symptom_id);
-        const medication = await this.getMedicationById(medication_id);
-        const user = await this.usersService.findUserById(user_id);
-        if (!symptom || !medication || !user) {
-            throw new HttpException(
-                "symptomToMedication/invalidData",
-                HttpStatus.BAD_REQUEST
-            );
+        if (user_id) {
+            const symptom = await this.getSymptomById(symptom_id);
+            const medication = await this.getMedicationById(medication_id);
+            const user = await this.usersService.findUserById(user_id);
+            if (!symptom || !medication || !user) {
+                throw new HttpException(
+                    "symptomToMedication/invalidData",
+                    HttpStatus.BAD_REQUEST
+                );
+            }
+            let isCustom = true;
+            if (user.role === RoleEnum.ADMIN) {
+                isCustom = false;
+            }
+            return this.symptomsMedicationsRepository.save({
+                symptom,
+                medication,
+                isCustom,
+            });
+        } else {
+            const symptom = await this.getSymptomById(symptom_id);
+            const medication = await this.getMedicationById(medication_id);
+            if (!symptom || !medication) {
+                throw new HttpException(
+                    "symptomToMedication/invalidData",
+                    HttpStatus.BAD_REQUEST
+                );
+            }
+            return this.symptomsMedicationsRepository.save({
+                symptom,
+                medication,
+                isCustom: false,
+            });
         }
-        const isCustom = false;
-        return this.symptomsMedicationsRepository.save({
-            symptom,
-            medication,
-            isCustom,
-        });
     }
 }

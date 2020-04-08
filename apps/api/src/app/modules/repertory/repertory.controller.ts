@@ -74,8 +74,9 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Delete("/medications/:id")
-    removeMedicationById(@Param() { id }): Promise<void> {
-        return this.repertoryService.removeMedicationById(id);
+    removeMedicationById(@Request() req, @Param() { id }): Promise<void> {
+        const user_id = req.user.id;
+        return this.repertoryService.removeMedicationById(id, user_id);
     }
 
     @UseGuards(JwtAuthGuard)
@@ -151,11 +152,7 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/symptoms/bulkCreate")
-    async bulkCreateSymptoms(
-        @Request() req,
-        @Body() body: any[]
-    ): Promise<void> {
-        const user_id = req.user.id;
+    async bulkCreateSymptoms(@Body() body: any[]): Promise<void> {
         const bulkCreateAndBindingMedications = async (
             meds: string[],
             symptom_id: number
@@ -167,8 +164,7 @@ export class RepertoryController {
                 if (medication) {
                     await this.repertoryService.addSymptomToMedication(
                         symptom_id,
-                        medication.medication_id,
-                        user_id
+                        medication.medication_id
                     );
                 } else {
                     const newMedication = await this.repertoryService.createMedication(
@@ -176,8 +172,7 @@ export class RepertoryController {
                     );
                     await this.repertoryService.addSymptomToMedication(
                         symptom_id,
-                        newMedication.medication_id,
-                        user_id
+                        newMedication.medication_id
                     );
                 }
             }
@@ -290,12 +285,15 @@ export class RepertoryController {
     async addSymptomsToMedication(
         @Request() req,
         @Body() body: SymptomToMedicationBodyDTO
-    ): Promise<any> {
-        const { id } = req.user;
-        return this.repertoryService.addSymptomToMedication(
-            body.symptom_id,
-            body.medication_id,
-            id
-        );
+    ): Promise<void> {
+        const user_id = req.user.id;
+        const { symptoms, medication_id } = body;
+        for (const symptomId of symptoms) {
+            await this.repertoryService.addSymptomToMedication(
+                symptomId,
+                medication_id,
+                user_id
+            );
+        }
     }
 }

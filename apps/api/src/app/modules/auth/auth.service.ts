@@ -60,7 +60,7 @@ export class AuthService {
         };
         await this.usersService.createUser(candidateUser);
         return {
-            message: "user/created",
+            message: "users/created",
         };
     }
 }
