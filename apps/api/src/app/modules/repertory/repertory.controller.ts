@@ -152,29 +152,21 @@ export class RepertoryController {
 
     @UseGuards(JwtAuthGuard)
     @Post("/symptoms/bulkCreate")
-    async bulkCreateSymptoms(@Body() body: any[]): Promise<void> {
+    async bulkCreateSymptoms(
+        @Request() req,
+        @Body() body: any[]
+    ): Promise<void> {
+        const user_id = req.user.id;
         const bulkCreateAndBindingMedications = async (
             meds: string[],
             symptom_id: number
         ): Promise<void> => {
-            for (const med of meds) {
-                const medication = await this.repertoryService.getMedicationByName(
-                    med
+            for (const medication_name of meds) {
+                await this.repertoryService.addSymptomToMedication(
+                    symptom_id,
+                    medication_name,
+                    user_id
                 );
-                if (medication) {
-                    await this.repertoryService.addSymptomToMedication(
-                        symptom_id,
-                        medication.medication_id
-                    );
-                } else {
-                    const newMedication = await this.repertoryService.createMedication(
-                        { name: med, description: "" }
-                    );
-                    await this.repertoryService.addSymptomToMedication(
-                        symptom_id,
-                        newMedication.medication_id
-                    );
-                }
             }
         };
         const bulkCreate = async (
@@ -287,11 +279,11 @@ export class RepertoryController {
         @Body() body: SymptomToMedicationBodyDTO
     ): Promise<void> {
         const user_id = req.user.id;
-        const { symptoms, medication_id } = body;
+        const { symptoms, medication_name } = body;
         for (const symptomId of symptoms) {
             await this.repertoryService.addSymptomToMedication(
                 symptomId,
-                medication_id,
+                medication_name,
                 user_id
             );
         }

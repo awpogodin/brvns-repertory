@@ -1,9 +1,9 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, Length } from "class-validator";
 
 export class SymptomToMedicationBodyDTO {
     @IsNotEmpty()
     symptoms: number[];
 
-    @IsNotEmpty()
-    medication_id: number;
+    @Length(2, 25)
+    medication_name: string;
 }
