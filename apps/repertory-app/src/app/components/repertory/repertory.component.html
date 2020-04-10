@@ -55,6 +55,7 @@
         <button
             mat-button
             [disabled]="loading || inputSymptom.length === 0"
+            (click)="openDialog()"
             color="accent"
         >
             Добавить

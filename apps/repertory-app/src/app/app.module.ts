@@ -30,6 +30,8 @@ import { MatCardModule } from "@angular/material/card";
 import { MatTableModule } from "@angular/material/table";
 import { MedicationsComponent } from "./components/medications/medications.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { DialogComponent } from './components/repertory/dialog/dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 const routes: Routes = [
     {
@@ -71,6 +73,7 @@ const routes: Routes = [
         RegisterFormComponent,
         ProfileComponent,
         MedicationsComponent,
+        DialogComponent,
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -93,6 +96,7 @@ const routes: Routes = [
         MatCardModule,
         MatTableModule,
         MatPaginatorModule,
+        MatDialogModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

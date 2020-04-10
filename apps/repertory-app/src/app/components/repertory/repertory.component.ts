@@ -6,6 +6,8 @@ import { NotificationService } from "../../services/notification.service";
 import { MedicationDTO } from "../../../../../../common/dto/medication.dto";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
+import { MatDialog } from "@angular/material/dialog";
+import { DialogComponent } from "./dialog/dialog.component";
 
 @Component({
     selector: "brvns-repertory-repertory",
@@ -33,7 +35,8 @@ export class RepertoryComponent implements OnInit {
 
     constructor(
         private restApiService: RestApiService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        public dialog: MatDialog
     ) {}
 
     ngOnInit(): void {
@@ -49,6 +52,18 @@ export class RepertoryComponent implements OnInit {
                 this.loading = false;
             }
         );
+    }
+
+    openDialog(): void {
+        const dialogRef = this.dialog.open(DialogComponent, {
+            width: "300px",
+        });
+
+        dialogRef.afterClosed().subscribe((res) => {
+            if (res) {
+                console.log(res);
+            }
+        });
     }
 
     private fetchParentSymptoms(): void {

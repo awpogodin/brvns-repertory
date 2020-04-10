@@ -1,0 +1,17 @@
+<h1 mat-dialog-title class="title">Добавление связки</h1>
+<div mat-dialog-content>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+        <mat-form-field class="input" hideRequiredMarker>
+            <mat-label>Название препарата</mat-label>
+            <input matInput formControlName="name" type="text" required>
+            <mat-error *ngIf="name.invalid">{{getNameErrorMessage()}}</mat-error>
+        </mat-form-field>
+    </form>
+    <span class="warn">
+            Препарат будет связан со всеми выбранными симптомами!
+        </span>
+</div>
+<div mat-dialog-actions class="buttons">
+    <button mat-button (click)="onNoClick()">Отменить</button>
+    <button mat-button [disabled]="form.invalid" (click)="onSubmit()" color="accent">Добавить</button>
+</div>
