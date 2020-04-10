@@ -63,7 +63,7 @@
     <div class="progress-bar">
         <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
     </div>
-    <div class="table" *ngIf="!loading">
+    <div *ngIf="!loading">
         <table mat-table [dataSource]="medications" class="table">
             <ng-container matColumnDef="medication_id">
                 <th mat-header-cell *matHeaderCellDef class="idColumn"> Id </th>
