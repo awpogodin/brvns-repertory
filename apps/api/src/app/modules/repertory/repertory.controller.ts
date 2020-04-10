@@ -1,15 +1,15 @@
 import {
-    Controller,
-    Get,
-    Post,
     Body,
-    UseGuards,
-    Request,
-    Param,
-    Query,
+    Controller,
+    Delete,
+    Get,
     HttpException,
     HttpStatus,
-    Delete,
+    Param,
+    Post,
+    Query,
+    Request,
+    UseGuards,
 } from "@nestjs/common";
 import { RepertoryService } from "./repertory.service";
 import { CategoryDTO } from "../../../../../../common/dto/category.dto";
@@ -243,33 +243,45 @@ export class RepertoryController {
     async getMedicationBySymptoms(
         @Body() arrOfSymptoms: SymptomDTO[]
     ): Promise<MedicationDTO[]> {
-        const arrayOfSymptomsMedications = [];
-        const arrayOfMedications = [];
-        const arrayOfChildsOfSymptoms = [];
-        for (const symptom of arrOfSymptoms) {
-            const parents =
-                arrOfSymptoms.filter(
-                    (s) => s.parent?.symptom_id === symptom.symptom_id
-                ) || [];
-            if (parents.length === 0) {
-                arrayOfChildsOfSymptoms.push(symptom.symptom_id);
+        const getMedications = async (isCustom = false): Promise<any[]> => {
+            const arrayOfSymptomsMedications = [];
+            const arrayOfMedications = [];
+            const arrayOfChildsOfSymptoms = [];
+            for (const symptom of arrOfSymptoms) {
+                const parents =
+                    arrOfSymptoms.filter(
+                        (s) => s.parent?.symptom_id === symptom.symptom_id
+                    ) || [];
+                if (parents.length === 0) {
+                    arrayOfChildsOfSymptoms.push(symptom.symptom_id);
+                }
             }
-        }
-        for (const id of arrayOfChildsOfSymptoms) {
-            const symptomsMedications = await this.repertoryService.getMedicationsBySymptomId(
-                id
+            for (const id of arrayOfChildsOfSymptoms) {
+                const symptomsMedications = await this.repertoryService.getMedicationsBySymptomId(
+                    id,
+                    isCustom
+                );
+                arrayOfSymptomsMedications.push(
+                    symptomsMedications.map((m) => {
+                        arrayOfMedications.push(m.medication);
+                        return m.medication.medication_id;
+                    })
+                );
+            }
+            const arrayOfMedicationsId = intersection(
+                arrayOfSymptomsMedications
             );
-            arrayOfSymptomsMedications.push(
-                symptomsMedications.map((m) => {
-                    arrayOfMedications.push(m.medication);
-                    return m.medication.medication_id;
-                })
+            const result = arrayOfMedicationsId.map((id) =>
+                arrayOfMedications.find((m) => m.medication_id === id)
             );
-        }
-        const arrayOfMedicationsId = intersection(arrayOfSymptomsMedications);
-        return arrayOfMedicationsId.map((id) =>
-            arrayOfMedications.find((m) => m.medication_id === id)
-        );
+            return result.map((m) => ({
+                ...m,
+                isCustom,
+            }));
+        };
+        const meds = await getMedications();
+        const customMeds = await getMedications(true);
+        return meds.concat(customMeds);
     }
 
     @UseGuards(JwtAuthGuard)

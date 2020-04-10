@@ -1,7 +1,7 @@
 <div>
     <brvns-repertory-heading title="Реперторий"></brvns-repertory-heading>
     <div class="content">
-        <div class="form" *ngIf="!loading || listOfCategories.length !== 0; else loadingBlock">
+        <div class="form" *ngIf="!loading; else loadingBlock">
             <div class="form__input" *ngIf="listOfCategories.length !== 0">
                 <tag-input
                     secondaryPlaceholder="Введите реперторий"
@@ -68,7 +68,7 @@
         <table mat-table [dataSource]="medications" class="table">
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Название </th>
-                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                <td mat-cell *matCellDef="let element"><span [ngClass]="{isCustom: element.isCustom}"> {{element.name}} </span></td>
             </ng-container>
 
             <ng-container matColumnDef="description">
