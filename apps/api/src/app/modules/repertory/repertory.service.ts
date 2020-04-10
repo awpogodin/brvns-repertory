@@ -81,12 +81,6 @@ export class RepertoryService {
         return this.symptomRepository.find({
             relations: ["parent", "category"],
         });
-        // return this.symptomRepository
-        //     .createQueryBuilder("symptom")
-        //     .leftJoinAndSelect("symptom.parent", "parent_id")
-        //     .leftJoinAndSelect("symptom.category", "category_id")
-        //     .leftJoinAndSelect("symptom.medications", "medication")
-        //     .getMany();
     }
 
     getSymptomById(id: number): Promise<SymptomDAO> {
@@ -190,7 +184,7 @@ export class RepertoryService {
 
             return this.symptomsMedicationsRepository.save({
                 symptom,
-                newMedication,
+                medication: newMedication,
                 isCustom,
             });
         } else {
