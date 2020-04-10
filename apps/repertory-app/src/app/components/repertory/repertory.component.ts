@@ -8,6 +8,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatDialog } from "@angular/material/dialog";
 import { DialogComponent } from "./dialog/dialog.component";
+import { SymptomToMedicationBodyDTO } from "../../../../../../common/dto/symptom-to-medication-body.dto";
 
 @Component({
     selector: "brvns-repertory-repertory",
@@ -25,11 +26,7 @@ export class RepertoryComponent implements OnInit {
         MedicationDTO
     > = new MatTableDataSource<MedicationDTO>([]);
 
-    public displayedColumns: string[] = [
-        "medication_id",
-        "name",
-        "description",
-    ];
+    public displayedColumns: string[] = ["name", "description"];
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -59,9 +56,29 @@ export class RepertoryComponent implements OnInit {
             width: "300px",
         });
 
-        dialogRef.afterClosed().subscribe((res) => {
-            if (res) {
-                console.log(res);
+        dialogRef.afterClosed().subscribe((name) => {
+            if (name) {
+                const symptomsIds = this.inputSymptom.map((s) => s.symptom_id);
+                const body: SymptomToMedicationBodyDTO = {
+                    medication_name: name,
+                    symptoms: symptomsIds,
+                };
+                this.loading = true;
+                this.restApiService.addMedicationToSymptom(body).subscribe(
+                    () => {
+                        this.loading = false;
+                        this.notificationService.notification$.next(
+                            "Связка добавлена"
+                        );
+                        this.updateMedications();
+                    },
+                    (err) => {
+                        const msg = codes[err] || "Что-то пошло не так";
+                        this.notificationService.notification$.next(msg);
+                        this.loading = false;
+                        this.updateMedications();
+                    }
+                );
             }
         });
     }
