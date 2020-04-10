@@ -1,9 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { RestApiService } from "../../services/rest-api.service";
 import { SymptomDTO } from "../../../../../../common/dto/symptom.dto";
 import codes from "../../../../../../common/response-codes";
 import { NotificationService } from "../../services/notification.service";
 import { MedicationDTO } from "../../../../../../common/dto/medication.dto";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
     selector: "brvns-repertory-repertory",
@@ -17,18 +19,25 @@ export class RepertoryComponent implements OnInit {
     public inputSymptom = [];
     public listOfSymptoms = [];
 
+    public medications: MatTableDataSource<
+        MedicationDTO
+    > = new MatTableDataSource<MedicationDTO>([]);
+
     public displayedColumns: string[] = [
         "medication_id",
         "name",
         "description",
     ];
-    public medications: MedicationDTO[] = [];
+
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
     constructor(
         private restApiService: RestApiService,
         private notificationService: NotificationService
     ) {}
 
     ngOnInit(): void {
+        this.medications.paginator = this.paginator;
         this.restApiService.getAllCategories().subscribe(
             (res) => {
                 this.listOfCategories = res;
@@ -67,7 +76,7 @@ export class RepertoryComponent implements OnInit {
     public onRemoveCategory(): void {
         this.inputSymptom.splice(0, this.inputSymptom.length);
         this.listOfSymptoms.splice(0, this.listOfSymptoms.length);
-        this.medications = [];
+        this.medications = new MatTableDataSource<MedicationDTO>([]);
         if (this.inputCategory.length) {
             this.fetchParentSymptoms();
         }
@@ -133,7 +142,7 @@ export class RepertoryComponent implements OnInit {
         this.loading = true;
         const body = this.inputSymptom;
         this.restApiService.getMedicationsBySymptoms(body).subscribe((res) => {
-            this.medications = res;
+            this.medications = new MatTableDataSource<MedicationDTO>(res);
             this.loading = false;
         });
     }

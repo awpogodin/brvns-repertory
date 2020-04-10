@@ -37,6 +37,7 @@ export class MedicationsComponent implements OnInit {
     public medications: MatTableDataSource<
         MedicationDTO
     > = new MatTableDataSource<MedicationDTO>([]);
+
     public displayedColumns: string[] = [
         "medication_id",
         "name",
