@@ -1,7 +1,7 @@
 <div>
     <brvns-repertory-heading title="Реперторий"></brvns-repertory-heading>
     <div class="content">
-        <div class="form" *ngIf="!loading; else loadingBlock">
+        <div class="form" *ngIf="!loading || listOfCategories.length !== 0; else loadingBlock">
             <div class="form__input" *ngIf="listOfCategories.length !== 0">
                 <tag-input
                     secondaryPlaceholder="Введите реперторий"
@@ -59,6 +59,9 @@
         >
             Добавить
         </button>
+    </div>
+    <div class="progress-bar">
+        <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
     </div>
     <div class="table" *ngIf="!loading">
         <table mat-table [dataSource]="medications" class="table">
