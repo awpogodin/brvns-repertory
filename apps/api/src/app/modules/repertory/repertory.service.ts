@@ -63,7 +63,10 @@ export class RepertoryService {
     async removeMedicationById(id: number, user_id: number): Promise<void> {
         const user: UserDAO = await this.usersService.findUserById(user_id);
         if (!user || user.role !== RoleEnum.ADMIN) {
-            throw new HttpException("users/noPermissions", HttpStatus.CONFLICT);
+            throw new HttpException(
+                "users/noPermissions",
+                HttpStatus.FORBIDDEN
+            );
         }
         const medication: MedicationDAO = await this.medicationRepository.findOne(
             id
