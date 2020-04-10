@@ -8,6 +8,13 @@
         margin: 15px 0;
         font-size: 16px;
     }
+
+    &__fake-input {
+        margin: 15px 0;
+        height: 48px;
+        width: 100%;
+        background-color: #FAFAFA;
+    }
 }
 
 .buttons {
@@ -34,5 +41,5 @@
 }
 
 .isCustom {
-    color: #FF5722;
+    color: #E91E63;
 }
