@@ -8,7 +8,7 @@
         </mat-form-field>
         <mat-form-field class="form__input" hideRequiredMarker>
             <mat-label>Описание</mat-label>
-            <input matInput formControlName="description" type="text">
+            <input matInput formControlName="description" type="text" required>
             <mat-error *ngIf="description.invalid">{{getDescriptionErrorMessage()}}</mat-error>
         </mat-form-field>
         <div class="progress-bar">

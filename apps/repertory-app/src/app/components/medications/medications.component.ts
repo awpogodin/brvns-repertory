@@ -38,11 +38,7 @@ export class MedicationsComponent implements OnInit {
         MedicationDTO
     > = new MatTableDataSource<MedicationDTO>([]);
 
-    public displayedColumns: string[] = [
-        "name",
-        "description",
-        "actions",
-    ];
+    public displayedColumns: string[] = ["name", "description", "actions"];
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -55,7 +51,14 @@ export class MedicationsComponent implements OnInit {
                 Validators.maxLength(15),
             ]),
         ],
-        description: ["", Validators.compose([Validators.maxLength(25)])],
+        description: [
+            "",
+            Validators.compose([
+                Validators.required,
+                Validators.minLength(2),
+                Validators.maxLength(50),
+            ]),
+        ],
     });
 
     ngOnInit(): void {
@@ -79,8 +82,14 @@ export class MedicationsComponent implements OnInit {
 
     getDescriptionErrorMessage(): string[] {
         const errors = [];
+        if (this.description.errors.required) {
+            errors.push("Введите описание");
+        }
+        if (this.description.errors.minlength) {
+            errors.push("Длина должна быть не менее 2 символов");
+        }
         if (this.description.errors.maxlength) {
-            errors.push("Длина должна быть не более 25 символов");
+            errors.push("Длина должна быть не более 50 символов");
         }
         return errors;
     }
