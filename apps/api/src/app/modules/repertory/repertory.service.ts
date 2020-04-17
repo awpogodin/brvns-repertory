@@ -36,6 +36,14 @@ export class RepertoryService {
         return this.categoryRepository.findOne(id);
     }
 
+    getCategoryByTitle(title: string): Promise<CategoryDAO> {
+        return this.categoryRepository.findOne({
+            where: {
+                title: title,
+            },
+        });
+    }
+
     createCategory(category: CategoryBodyDTO): Promise<CategoryDAO> {
         return this.categoryRepository.save(category);
     }

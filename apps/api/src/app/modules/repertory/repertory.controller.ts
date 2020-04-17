@@ -53,9 +53,16 @@ export class RepertoryController {
     }
 
     @UseGuards(JwtAuthGuard)
-    @Post("/categories")
-    async createCategory(@Body() category: CategoryBodyDTO): Promise<void> {
-        await this.repertoryService.createCategory(category);
+    @Post("/categories/bulkCreate")
+    async createCategory(@Body() categories: CategoryBodyDTO[]): Promise<void> {
+        for (const newCategory of categories) {
+            const category = await this.repertoryService.getCategoryByTitle(
+                newCategory.title
+            );
+            if (!category) {
+                await this.repertoryService.createCategory(newCategory);
+            }
+        }
     }
 
     @UseGuards(JwtAuthGuard)
@@ -84,8 +91,13 @@ export class RepertoryController {
     async bulkCreateMedications(
         @Body() medications: MedicationBodyDTO[]
     ): Promise<void> {
-        for (const medication of medications) {
-            await this.repertoryService.createMedication(medication);
+        for (const newMedication of medications) {
+            const medication = await this.repertoryService.getMedicationByName(
+                newMedication.name
+            );
+            if (!medication) {
+                await this.repertoryService.createMedication(newMedication);
+            }
         }
     }
 
