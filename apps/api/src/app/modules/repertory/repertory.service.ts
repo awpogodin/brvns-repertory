@@ -183,27 +183,20 @@ export class RepertoryService {
                 HttpStatus.BAD_REQUEST
             );
         }
+        if (!medication) {
+            throw new HttpException(
+                "medications/doesNotExist",
+                HttpStatus.BAD_REQUEST
+            );
+        }
         let isCustom = true;
         if (user.role === RoleEnum.ADMIN) {
             isCustom = false;
         }
-        if (!medication) {
-            const newMedication = await this.createMedication({
-                name: medication_name,
-                description: "",
-            });
-
-            return this.symptomsMedicationsRepository.save({
-                symptom,
-                medication: newMedication,
-                isCustom,
-            });
-        } else {
-            return this.symptomsMedicationsRepository.save({
-                symptom,
-                medication,
-                isCustom,
-            });
-        }
+        return this.symptomsMedicationsRepository.save({
+            symptom,
+            medication,
+            isCustom,
+        });
     }
 }

@@ -174,11 +174,16 @@ export class RepertoryController {
             symptom_id: number
         ): Promise<void> => {
             for (const medication_name of meds) {
-                await this.repertoryService.addSymptomToMedication(
-                    symptom_id,
-                    medication_name,
-                    user_id
+                const medication = await this.repertoryService.getMedicationByName(
+                    medication_name
                 );
+                if (medication) {
+                    await this.repertoryService.addSymptomToMedication(
+                        symptom_id,
+                        medication_name,
+                        user_id
+                    );
+                }
             }
         };
         const bulkCreate = async (
