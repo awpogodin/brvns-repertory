@@ -4,8 +4,8 @@
         <div class="form" *ngIf="!loading; else loadingBlock">
             <div class="form__input" *ngIf="listOfCategories.length !== 0">
                 <tag-input
-                    secondaryPlaceholder="Введите реперторий"
-                    placeholder="+ реперторий"
+                    secondaryPlaceholder="Введите главу"
+                    placeholder="+ глава"
                     [(ngModel)]="inputCategory"
                     [identifyBy]="'category_id'"
                     [displayBy]="'title'"
