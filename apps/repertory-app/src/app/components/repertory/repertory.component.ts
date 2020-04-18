@@ -88,17 +88,19 @@ export class RepertoryComponent implements OnInit {
         const categories = this.inputCategory
             .map((c) => c.category_id)
             .join(",");
-        this.restApiService.getParentSymptomsByCategories(categories).subscribe(
-            (res) => {
-                this.listOfSymptoms = res;
-                this.loading = false;
-            },
-            (err) => {
-                const msg = codes[err] || "Что-то пошло не так";
-                this.notificationService.notification$.next(msg);
-                this.loading = false;
-            }
-        );
+        this.restApiService
+            .getParentSymptomsByCategories(categories, true)
+            .subscribe(
+                (res) => {
+                    this.listOfSymptoms = res;
+                    this.loading = false;
+                },
+                (err) => {
+                    const msg = codes[err] || "Что-то пошло не так";
+                    this.notificationService.notification$.next(msg);
+                    this.loading = false;
+                }
+            );
     }
 
     public onAddCategory(): void {

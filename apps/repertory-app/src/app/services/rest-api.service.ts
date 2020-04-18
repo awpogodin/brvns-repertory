@@ -8,6 +8,7 @@ import { SymptomDTO } from "../../../../../common/dto/symptom.dto";
 import { MedicationDTO } from "../../../../../common/dto/medication.dto";
 import { MedicationBodyDTO } from "../../../../../common/dto/medication-body.dto";
 import { SymptomToMedicationBodyDTO } from "../../../../../common/dto/symptom-to-medication-body.dto";
+import { SymptomBodyDTO } from "../../../../../common/dto/symptom-body.dto";
 
 const API = "/api";
 
@@ -35,11 +36,12 @@ export class RestApiService {
     }
 
     getParentSymptomsByCategories(
-        categories: string
+        categories: string,
+        autoPrefix = false
     ): Observable<SymptomDTO[]> {
         return this.httpClient
             .get<SymptomDTO[]>(
-                `${API}/repertory/symptoms?category_id=${categories}`
+                `${API}/repertory/symptoms?category_id=${categories}&autoPrefix=${autoPrefix}`
             )
             .pipe(first());
     }
@@ -52,6 +54,12 @@ export class RestApiService {
             .get<SymptomDTO[]>(
                 `${API}/repertory/symptoms?parent_id=${id}&autoPrefix=${autoPrefix}`
             )
+            .pipe(first());
+    }
+
+    createSymptom(body: SymptomBodyDTO): Observable<any> {
+        return this.httpClient
+            .post(`${API}/repertory/symptoms`, body)
             .pipe(first());
     }
 

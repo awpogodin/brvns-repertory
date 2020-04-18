@@ -117,7 +117,7 @@ export class RepertoryController {
             const childs = await this.repertoryService.getChildSymptomsByParentId(
                 parent.symptom_id
             );
-            if (query.autoPrefix === true) {
+            if (query.autoPrefix) {
                 return childs.map((symptom) => ({
                     ...symptom,
                     name: `${parent.name}: ${symptom.name}`,
@@ -141,12 +141,16 @@ export class RepertoryController {
                 const symptoms = await this.repertoryService.getParentSymptomsByCategoryId(
                     category.category_id
                 );
-                result.push(
-                    ...symptoms.map((symptom) => ({
-                        ...symptom,
-                        name: `${category.title}: ${symptom.name}`,
-                    }))
-                );
+                if (query.autoPrefix) {
+                    result.push(
+                        ...symptoms.map((symptom) => ({
+                            ...symptom,
+                            name: `${category.title}: ${symptom.name}`,
+                        }))
+                    );
+                } else {
+                    result.push(...symptoms);
+                }
             }
             return result;
         }
@@ -162,6 +166,7 @@ export class RepertoryController {
     @UseGuards(JwtAuthGuard)
     @Post("/symptoms")
     async createSymptom(@Body() symptom: SymptomBodyDTO): Promise<void> {
+        console.log(symptom);
         await this.repertoryService.createSymptom(symptom);
     }
 

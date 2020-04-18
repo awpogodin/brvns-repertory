@@ -29,9 +29,12 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatCardModule } from "@angular/material/card";
 import { MatTableModule } from "@angular/material/table";
 import { MedicationsComponent } from "./components/medications/medications.component";
-import {MatPaginatorModule} from "@angular/material/paginator";
-import { DialogComponent } from './components/repertory/dialog/dialog.component';
-import {MatDialogModule} from "@angular/material/dialog";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { DialogComponent } from "./components/repertory/dialog/dialog.component";
+import { MatDialogModule } from "@angular/material/dialog";
+import { SymptomsComponent } from "./components/symptoms/symptoms.component";
+import { SymptomComponent } from './components/symptoms/symptom/symptom.component';
+import {MatSelectModule} from "@angular/material/select";
 
 const routes: Routes = [
     {
@@ -47,6 +50,11 @@ const routes: Routes = [
     {
         path: "medications",
         component: MedicationsComponent,
+        canActivate: [AuthGuard],
+    },
+    {
+        path: "symptoms",
+        component: SymptomsComponent,
         canActivate: [AuthGuard],
     },
     {
@@ -74,6 +82,8 @@ const routes: Routes = [
         ProfileComponent,
         MedicationsComponent,
         DialogComponent,
+        SymptomsComponent,
+        SymptomComponent,
     ],
     imports: [
         RouterModule.forRoot(routes),
@@ -97,6 +107,7 @@ const routes: Routes = [
         MatTableModule,
         MatPaginatorModule,
         MatDialogModule,
+        MatSelectModule,
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

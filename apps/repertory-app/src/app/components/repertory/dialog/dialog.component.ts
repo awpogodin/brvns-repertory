@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { Component } from "@angular/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import {
