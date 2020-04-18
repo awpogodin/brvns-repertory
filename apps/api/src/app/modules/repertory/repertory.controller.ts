@@ -117,10 +117,13 @@ export class RepertoryController {
             const childs = await this.repertoryService.getChildSymptomsByParentId(
                 parent.symptom_id
             );
-            return childs.map((symptom) => ({
-                ...symptom,
-                name: `${parent.name}: ${symptom.name}`,
-            }));
+            if (query.autoPrefix === true) {
+                return childs.map((symptom) => ({
+                    ...symptom,
+                    name: `${parent.name}: ${symptom.name}`,
+                }));
+            }
+            return childs;
         }
         if (query.category_id) {
             const arrOfCategories = query.category_id.split(",");

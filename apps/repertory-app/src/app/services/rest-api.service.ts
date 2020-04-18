@@ -44,9 +44,14 @@ export class RestApiService {
             .pipe(first());
     }
 
-    getChildSymptomsByParentId(id: number): Observable<SymptomDTO[]> {
+    getChildSymptomsByParentId(
+        id: number,
+        autoPrefix = false
+    ): Observable<SymptomDTO[]> {
         return this.httpClient
-            .get<SymptomDTO[]>(`${API}/repertory/symptoms?parent_id=${id}`)
+            .get<SymptomDTO[]>(
+                `${API}/repertory/symptoms?parent_id=${id}&autoPrefix=${autoPrefix}`
+            )
             .pipe(first());
     }
 

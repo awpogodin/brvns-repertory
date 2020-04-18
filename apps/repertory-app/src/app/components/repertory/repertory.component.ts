@@ -117,7 +117,7 @@ export class RepertoryComponent implements OnInit {
     public onAddSymptom(symptom: SymptomDTO): void {
         this.loading = true;
         this.restApiService
-            .getChildSymptomsByParentId(symptom.symptom_id)
+            .getChildSymptomsByParentId(symptom.symptom_id, true)
             .subscribe(
                 (res) => {
                     this.listOfSymptoms.push(...res);
