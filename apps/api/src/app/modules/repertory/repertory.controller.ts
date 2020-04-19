@@ -117,7 +117,7 @@ export class RepertoryController {
             const childs = await this.repertoryService.getChildSymptomsByParentId(
                 parent.symptom_id
             );
-            if (query.autoPrefix) {
+            if (query.autoPrefix === "true") {
                 return childs.map((symptom) => ({
                     ...symptom,
                     name: `${parent.name}: ${symptom.name}`,
@@ -141,7 +141,7 @@ export class RepertoryController {
                 const symptoms = await this.repertoryService.getParentSymptomsByCategoryId(
                     category.category_id
                 );
-                if (query.autoPrefix) {
+                if (query.autoPrefix === "true") {
                     result.push(
                         ...symptoms.map((symptom) => ({
                             ...symptom,

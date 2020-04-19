@@ -1,5 +1,5 @@
 <div>
-    <brvns-repertory-heading title="Редактор"></brvns-repertory-heading>
+    <brvns-repertory-heading title="Симптомы"></brvns-repertory-heading>
     <mat-form-field class="input">
         <mat-label>Глава</mat-label>
         <mat-select [disabled]="isLoading || !categories" [(value)]="category" (selectionChange)="onSelect($event.value)">
@@ -25,17 +25,19 @@
                 >
                 </brvns-repertory-symptom>
             </div>
-            <div class="empty" *ngIf="symptoms.length === 0">
+            <div class="symptoms-block">
+                <div class="empty" *ngIf="symptoms.length === 0">
                 <span class="empty__text">
                     Нет симптомов
                 </span>
-            </div>
-            <div class="list" *ngIf="symptoms.length > 0">
-                <brvns-repertory-symptom
-                    *ngFor="let symptom of symptoms"
-                    [symptom]="symptom"
-                    (click)="onExpandSymptom(symptom)"
-                ></brvns-repertory-symptom>
+                </div>
+                <div class="list" *ngIf="symptoms.length > 0">
+                    <brvns-repertory-symptom
+                        *ngFor="let symptom of symptoms"
+                        [symptom]="symptom"
+                        (click)="onExpandSymptom(symptom)"
+                    ></brvns-repertory-symptom>
+                </div>
             </div>
         </div>
         <div class="form" *ngIf="!isLoading && !isFetching">

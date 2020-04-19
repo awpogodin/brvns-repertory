@@ -2,8 +2,17 @@
     min-height: 30px;
 }
 
+.symptoms-block {
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+}
+
 .list {
     display: flex;
+    padding: 6px 0;
     flex-direction: row;
     flex-wrap: wrap;
 }
@@ -23,10 +32,14 @@
 }
 
 .empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 20px auto;
     text-align: center;
 
     &__text {
+        display: block;
         font-size: 16px;
         font-weight: 300;
         color: #9E9E9E;

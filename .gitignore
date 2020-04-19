@@ -40,4 +40,4 @@ Thumbs.db
 
 .env
 
-.nx-tmp
+*.nx-tmp
