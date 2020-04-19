@@ -131,7 +131,12 @@ export class MedicationsComponent implements OnInit {
         );
     }
 
-    public onRemove(id: number): void {
+    applyFilter(event: Event): void {
+        const filterValue = (event.target as HTMLInputElement).value;
+        this.medications.filter = filterValue.trim().toLowerCase();
+    }
+
+    onRemove(id: number): void {
         this.restApiService.removeMedication(id).subscribe(
             () => {
                 this.fetchMedications();

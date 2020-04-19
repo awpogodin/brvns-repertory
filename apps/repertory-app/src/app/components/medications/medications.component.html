@@ -16,7 +16,12 @@
         </div>
         <button [disabled]="form.invalid || loading" class="form__btn" mat-button type="submit">Добавить</button>
     </form>
-    <div class="table">
+    <div class="content">
+        <mat-form-field class="search-input">
+            <mat-label>Поиск</mat-label>
+            <input matInput (keyup)="applyFilter($event)">
+        </mat-form-field>
+
         <table mat-table [dataSource]="medications" class="table">
             <ng-container matColumnDef="name">
                 <th mat-header-cell *matHeaderCellDef> Название </th>
