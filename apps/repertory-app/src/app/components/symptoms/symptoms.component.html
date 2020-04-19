@@ -12,7 +12,7 @@
         <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
     </div>
 
-    <div class="content" *ngIf="category">
+    <div class="content">
         <div *ngIf="!isFetching; else Loading">
             <div class="parent">
                 <button mat-icon-button aria-label="Назад" [disabled]="parentSymptoms.length === 0" (click)="onBack()">
@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="form" *ngIf="!isLoading && !isFetching">
+        <div class="form" *ngIf="!isLoading && !isFetching && !!category">
             <form (ngSubmit)="onSubmit()" [formGroup]="form">
                 <mat-form-field class="input" hideRequiredMarker>
                     <mat-label>Симптом</mat-label>
