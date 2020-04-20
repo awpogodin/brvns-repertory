@@ -7,7 +7,6 @@ import {
     Validators,
 } from "@angular/forms";
 import { RestApiService } from "../../../services/rest-api.service";
-import { MedicationDTO } from "common/dto/medication.dto";
 import codes from "../../../../../../../common/response-codes";
 import { NotificationService } from "../../../services/notification.service";
 import { Observable } from "rxjs";
