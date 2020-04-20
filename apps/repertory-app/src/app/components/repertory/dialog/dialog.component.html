@@ -3,8 +3,11 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
         <mat-form-field class="input" hideRequiredMarker>
             <mat-label>Название препарата</mat-label>
-            <input matInput formControlName="name" type="text" required>
+            <input matInput formControlName="name" type="text" [matAutocomplete]="meds" required>
             <mat-error *ngIf="name.invalid">{{getNameErrorMessage()}}</mat-error>
+            <mat-autocomplete #meds="matAutocomplete">
+                <mat-option *ngFor="let medication of filteredMedications | async" [value]="medication">{{medication}}</mat-option>
+            </mat-autocomplete>
         </mat-form-field>
     </form>
     <span class="warn">

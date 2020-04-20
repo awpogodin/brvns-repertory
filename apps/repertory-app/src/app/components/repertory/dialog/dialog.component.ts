@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatDialogRef } from "@angular/material/dialog";
 import {
     AbstractControl,
@@ -6,17 +6,30 @@ import {
     FormGroup,
     Validators,
 } from "@angular/forms";
+import { RestApiService } from "../../../services/rest-api.service";
+import { MedicationDTO } from "common/dto/medication.dto";
+import codes from "../../../../../../../common/response-codes";
+import { NotificationService } from "../../../services/notification.service";
+import { Observable } from "rxjs";
+import { startWith, map } from "rxjs/operators";
 
 @Component({
     selector: "brvns-repertory-dialog",
     templateUrl: "./dialog.component.html",
     styleUrls: ["./dialog.component.scss"],
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
+        private restApiService: RestApiService,
+        private notificationService: NotificationService,
         public dialogRef: MatDialogRef<DialogComponent>
     ) {}
+
+    public isLoading = true;
+
+    public medications: string[] = [];
+    public filteredMedications: Observable<string[]>;
 
     public form: FormGroup = this.formBuilder.group({
         name: [
@@ -56,5 +69,31 @@ export class DialogComponent {
 
     onNoClick(): void {
         this.dialogRef.close();
+    }
+
+    ngOnInit(): void {
+        this.restApiService.getAllMedications().subscribe(
+            (res) => {
+                this.medications = res.map((m) => m.name);
+                this.isLoading = false;
+                this.filteredMedications = this.name.valueChanges.pipe(
+                    startWith(""),
+                    map((v) => this._filter(v))
+                );
+            },
+            (err) => {
+                const msg = codes[err] || "Что-то пошло не так";
+                this.notificationService.notification$.next(msg);
+                this.isLoading = false;
+            }
+        );
+    }
+
+    private _filter(value: string): string[] {
+        const filterValue = value.toLowerCase();
+
+        return this.medications.filter((m) =>
+            m.toLowerCase().includes(filterValue)
+        );
     }
 }
