@@ -31,18 +31,18 @@ export class MedicationsComponent implements OnInit {
     get description(): AbstractControl {
         return this.form.get("description");
     }
-    public loading = false;
-    public loadingMedications = true;
+    loading = false;
+    loadingMedications = true;
 
     public medications: MatTableDataSource<
         MedicationDTO
     > = new MatTableDataSource<MedicationDTO>([]);
 
-    public displayedColumns: string[] = ["name", "description", "actions"];
+    displayedColumns: string[] = ["name", "description", "actions"];
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
-    public form: FormGroup = this.formBuilder.group({
+    form: FormGroup = this.formBuilder.group({
         name: [
             "",
             Validators.compose([

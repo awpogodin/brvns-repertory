@@ -8,8 +8,8 @@ import { UserDTO } from "../../../../../../common/dto/user.dto";
     styleUrls: ["./profile.component.scss"],
 })
 export class ProfileComponent implements OnInit {
-    public loading = true;
-    public currentUser: UserDTO;
+    loading = true;
+    currentUser: UserDTO;
 
     constructor(private restApiService: RestApiService) {}
 

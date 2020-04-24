@@ -16,17 +16,17 @@ import { SymptomToMedicationBodyDTO } from "../../../../../../common/dto/symptom
     styleUrls: ["./repertory.component.scss"],
 })
 export class RepertoryComponent implements OnInit {
-    public loading = true;
-    public inputCategory = [];
-    public listOfCategories = [];
-    public inputSymptom = [];
-    public listOfSymptoms = [];
+    loading = true;
+    inputCategory = [];
+    listOfCategories = [];
+    inputSymptom = [];
+    listOfSymptoms = [];
 
-    public medications: MatTableDataSource<
+    medications: MatTableDataSource<
         MedicationDTO
     > = new MatTableDataSource<MedicationDTO>([]);
 
-    public displayedColumns: string[] = ["name", "description"];
+    displayedColumns: string[] = ["name", "description"];
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -103,11 +103,11 @@ export class RepertoryComponent implements OnInit {
             );
     }
 
-    public onAddCategory(): void {
+    onAddCategory(): void {
         this.fetchParentSymptoms();
     }
 
-    public onRemoveCategory(): void {
+    onRemoveCategory(): void {
         this.inputSymptom.splice(0, this.inputSymptom.length);
         this.listOfSymptoms.splice(0, this.listOfSymptoms.length);
         this.medications = new MatTableDataSource<MedicationDTO>([]);
@@ -116,7 +116,7 @@ export class RepertoryComponent implements OnInit {
         }
     }
 
-    public onAddSymptom(symptom: SymptomDTO): void {
+    onAddSymptom(symptom: SymptomDTO): void {
         this.loading = true;
         this.restApiService
             .getChildSymptomsByParentId(symptom.symptom_id, true)
@@ -155,7 +155,7 @@ export class RepertoryComponent implements OnInit {
         return result;
     }
 
-    public onRemoveSymptom(symptom: SymptomDTO): void {
+    onRemoveSymptom(symptom: SymptomDTO): void {
         this.loading = true;
         const arrOfSymptomsToDelete = this.deepFindSymptomChilds(
             symptom.symptom_id
@@ -172,7 +172,7 @@ export class RepertoryComponent implements OnInit {
         this.updateMedications();
     }
 
-    public updateMedications(): void {
+    updateMedications(): void {
         this.loading = true;
         const body = this.inputSymptom;
         this.restApiService.getMedicationsBySymptoms(body).subscribe((res) => {

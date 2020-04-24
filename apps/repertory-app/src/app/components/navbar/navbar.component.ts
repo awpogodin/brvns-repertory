@@ -11,7 +11,7 @@ import { Unsubscribable } from "rxjs";
     styleUrls: ["./navbar.component.scss"],
 })
 export class NavbarComponent {
-    public currentUser: LoginResponseDTO;
+    currentUser: LoginResponseDTO;
     private sub: Unsubscribable;
 
     constructor(

@@ -28,7 +28,7 @@ export class LoginFormComponent {
         }
     }
 
-    public form: FormGroup = this.formBuilder.group({
+    form: FormGroup = this.formBuilder.group({
         email: [
             "",
             Validators.compose([Validators.required, Validators.email]),
@@ -43,7 +43,7 @@ export class LoginFormComponent {
         ],
     });
 
-    public loading = false;
+    loading = false;
 
     get email(): AbstractControl {
         return this.form.get("email");

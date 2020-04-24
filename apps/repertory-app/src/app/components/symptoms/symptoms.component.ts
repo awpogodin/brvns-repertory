@@ -23,16 +23,16 @@ export class SymptomsComponent implements OnInit {
         private notificationService: NotificationService
     ) {}
 
-    public isLoading = true;
-    public isFetching = false;
+    isLoading = true;
+    isFetching = false;
 
-    public categories: CategoryDTO[];
-    public category: CategoryDTO;
+    categories: CategoryDTO[];
+    category: CategoryDTO;
 
-    public parentSymptoms: SymptomDTO[] = [];
-    public symptoms: SymptomDTO[] = [];
+    parentSymptoms: SymptomDTO[] = [];
+    symptoms: SymptomDTO[] = [];
 
-    public form: FormGroup = this.formBuilder.group({
+    form: FormGroup = this.formBuilder.group({
         name: [
             "",
             Validators.compose([

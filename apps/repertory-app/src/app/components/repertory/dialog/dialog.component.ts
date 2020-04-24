@@ -25,12 +25,12 @@ export class DialogComponent implements OnInit {
         public dialogRef: MatDialogRef<DialogComponent>
     ) {}
 
-    public isLoading = true;
+    isLoading = true;
 
-    public medications: string[] = [];
-    public filteredMedications: Observable<string[]>;
+    medications: string[] = [];
+    filteredMedications: Observable<string[]>;
 
-    public form: FormGroup = this.formBuilder.group({
+    form: FormGroup = this.formBuilder.group({
         name: [
             "",
             Validators.compose([

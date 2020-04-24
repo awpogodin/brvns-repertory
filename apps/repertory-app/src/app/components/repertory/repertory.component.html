@@ -87,6 +87,6 @@
 <ng-template #loadingBlock>
     <div class="form">
         <div class="form__fake-input"></div>
-        <div class="form__fake-input"></div>
+        <div class="form__fake-input" *ngIf="listOfSymptoms.length !== 0"></div>
     </div>
 </ng-template>
