@@ -22,9 +22,9 @@ export class RepertoryComponent implements OnInit {
     inputSymptom = [];
     listOfSymptoms = [];
 
-    medications: MatTableDataSource<
+    medications: MatTableDataSource<MedicationDTO> = new MatTableDataSource<
         MedicationDTO
-    > = new MatTableDataSource<MedicationDTO>([]);
+    >([]);
 
     displayedColumns: string[] = ["name", "description"];
 

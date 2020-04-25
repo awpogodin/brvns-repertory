@@ -12,7 +12,7 @@ import { RepertoryModule } from "./modules/repertory/repertory.module";
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            load: [mainConfig]
+            load: [mainConfig],
         }),
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
@@ -20,16 +20,16 @@ import { RepertoryModule } from "./modules/repertory/repertory.module";
                 type: "postgres",
                 url: configService.get("dbUrl"),
                 synchronize: true,
-                autoLoadEntities: true
-            })
+                autoLoadEntities: true,
+            }),
         }),
         ServeStaticModule.forRoot({
-            rootPath: join(__dirname, "../../client"),
-            exclude: ["/api/.*"]
+            rootPath: join(__dirname, "../../../repertory-app"),
+            exclude: ["/api/.*"],
         }),
         AuthModule,
         UsersModule,
-        RepertoryModule
-    ]
+        RepertoryModule,
+    ],
 })
 export class AppModule {}
